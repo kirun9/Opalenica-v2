@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32929.385
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opalenica", "Opalenica\Opalenica.csproj", "{38F86C22-5EED-4C83-8475-86A6C03CAF7D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{193AD8FF-EFB2-4DF3-AE89-ADDE1C67404B}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opalenica.ModuleBase", "ModuleBase\Opalenica.ModuleBase.csproj", "{F7F1ADE9-4D19-45C5-B27E-C190BB229E64}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opalenica.Core", "Opalenica.Core\Opalenica.Core.csproj", "{DB212FED-43A4-4703-A6F1-F9243C36644E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opalenica.Updater", "Opalenica.Updater\Opalenica.Updater.csproj", "{94186E5C-43A0-442B-9242-41D82FFBF55E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{38F86C22-5EED-4C83-8475-86A6C03CAF7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38F86C22-5EED-4C83-8475-86A6C03CAF7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38F86C22-5EED-4C83-8475-86A6C03CAF7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38F86C22-5EED-4C83-8475-86A6C03CAF7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7F1ADE9-4D19-45C5-B27E-C190BB229E64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7F1ADE9-4D19-45C5-B27E-C190BB229E64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7F1ADE9-4D19-45C5-B27E-C190BB229E64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7F1ADE9-4D19-45C5-B27E-C190BB229E64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB212FED-43A4-4703-A6F1-F9243C36644E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB212FED-43A4-4703-A6F1-F9243C36644E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB212FED-43A4-4703-A6F1-F9243C36644E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB212FED-43A4-4703-A6F1-F9243C36644E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94186E5C-43A0-442B-9242-41D82FFBF55E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94186E5C-43A0-442B-9242-41D82FFBF55E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94186E5C-43A0-442B-9242-41D82FFBF55E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94186E5C-43A0-442B-9242-41D82FFBF55E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A6A04855-F88A-4F79-B367-0CE84906DFAF}
+	EndGlobalSection
+EndGlobal

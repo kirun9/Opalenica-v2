@@ -1,0 +1,46 @@
+{
+  "settings": {
+    "indentation": {
+      "indentationSize": 4,
+      "tabSize": 4,
+      "useTabs": false
+    },
+    "spacingRules": {},
+    "readabilityRules": {
+      "allowBuiltInTypeAliases": true
+    },
+    "orderingRules": {
+      "elementOrder": [ "kind", "accessibility", "constant", "static", "readonly" ],
+      "systemUsingDirectivesFirst": true,
+      "usingDirectivesPlacement": "outsideNamespace",
+      "blankLinesBetweenUsingGroups": "allow"
+    },
+    "namingRules": {
+      "allowCommonHungarianPrefixes": false,
+      "includeInferredTupleElementNames": true,
+      "tupleElementNameCasing": "camelCase"
+    },
+    "maintainabilityRules": {
+      "topLevelTypes": [ "class", "enum", "struct", "interface" ]
+    },
+    "layoutRules": {
+      "allowConsecutiveUsings": true,
+      "newlineAtEndOfFile": "require",
+      "allowDoWhileOnClosingBrace": false
+    },
+    "documentationRules": {
+      "companyName": "PKMK",
+      "copyrightText": "Copyright (c) {companyName}. All rights reserved.",
+      "xmlHeader": false,
+      "headerDecoration": "-------------------------------------------------",
+      "documentInterfaces": true,
+      "documentPrivateElements": false,
+      "documentInternalElements": false,
+      "documentPrivateFields": false,
+      "documentExposedElements": true,
+      "documentationCulture": "en-US",
+      "fileNamingConvention": "metadata",
+      "excludeFromPunctuationCheck": [ "seealso" ]
+    }
+  }
+}
