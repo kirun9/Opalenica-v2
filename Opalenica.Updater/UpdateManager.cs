@@ -14,7 +14,11 @@ public class UpdateManager
 {
     public delegate void DownloadProgressChangedEventHandler(object? sender, DownloadProgressChangedEventArgs e);
 
-    private static readonly string UpdateURL = "http://kirun9.com/programs";
+    private static readonly string UpdateURL = "http://kirun9.com/programs/";
+
+    public static event DownloadProgressChangedEventHandler? DownloadProgressChanged;
+    public static event EventHandler? DownloadingFileCompleted;
+    public static event EventHandler? DownloadingCompleted;
 
     public static bool IsServerAvaible()
     {
@@ -22,7 +26,7 @@ public class UpdateManager
         {
             using HttpClient client = new HttpClient();
             HttpRequestMessage message = new HttpRequestMessage();
-            message.RequestUri = new Uri(UpdateURL + "/opalenica.xml");
+            message.RequestUri = new Uri(UpdateURL + "/updates.xml");
             return client.Send(message).IsSuccessStatusCode;
         }
         catch { return false; }
@@ -33,14 +37,14 @@ public class UpdateManager
         try
         {
             XmlSerializer serializer = new XmlSerializer(typeof(UpdatesXml));
-            XmlReader reader = XmlReader.Create(UpdateURL + "/opalenica.xml");
+            XmlReader reader = XmlReader.Create(UpdateURL + "/updates.xml");
             if (serializer.CanDeserialize(reader))
             {
                 UpdatesXml updateData = (UpdatesXml)serializer.Deserialize(reader);
                 if (updateData is null)
                     throw new ApplicationException("Readed data is not in correct format. Unsuccessful parse");
                 // Select only updateInfo that we are interested in (from the same application)
-                var info = updateData.Updates.Where(e => e.ApplicationID == assembly.GetName().FullName);
+                var info = updateData.Updates.Where(e => e.ApplicationID == assembly.GetName().Name);
                 // Sort versions
                 info = info.OrderByDescending(e => e.Version);
                 if (info.First() is UpdateInfo newestInfo and not null)
@@ -55,26 +59,30 @@ public class UpdateManager
         }
     }
 
-    public static void DownloadUpdate(UpdateInfo info, DownloadProgressChangedEventHandler progressChanged, EventHandler downloadingFileCompleted, EventHandler downloadingCompleted)
+    public static void DownloadUpdate(UpdateInfo info)
     {
-        var tempLocation = Path.Combine(new FInfo(Assembly.GetEntryAssembly().Location).Directory.FullName, "temp");
-        var baseUri = new Uri(UpdateURL);
-        var updateUri = new Uri(baseUri, info.Location);
-        foreach (var file in info.FileList)
+        Thread thread = new Thread(() =>
         {
-            var fileInfo = new FInfo(Path.Combine(tempLocation, file.FileName));
-            if (!fileInfo.Directory.Exists) fileInfo.Directory.Create();
-            var fileStream = fileInfo.Create();
-            fileStream.Close();
-            fileStream.Dispose();
-            var fileUri = new Uri(updateUri, file.FileLocation);
-            DownloadFile(fileUri, Path.Combine(tempLocation, file.FileLocalLocation), file.FileHash, HashType.MD5, progressChanged).GetAwaiter().GetResult();
-            downloadingFileCompleted.Invoke(null, new EventArgs());
-        }
-        downloadingCompleted.Invoke(null, new EventArgs());
+            var tempLocation = Path.Combine(new FInfo(Assembly.GetEntryAssembly().Location).Directory.FullName, "temp");
+            var baseUri = new Uri(UpdateURL);
+            var updateUri = new Uri(baseUri, info.Location);
+            foreach (var file in info.FileList)
+            {
+                var fileInfo = new FInfo(Path.Combine(tempLocation, file.FileName));
+                if (!fileInfo.Directory.Exists) fileInfo.Directory.Create();
+                var fileStream = fileInfo.Create();
+                fileStream.Close();
+                fileStream.Dispose();
+                var fileUri = new Uri(updateUri, file.FileLocation);
+                DownloadFile(fileUri, Path.Combine(tempLocation, file.FileLocalLocation), file.FileHash, HashType.MD5).GetAwaiter().GetResult();
+                DownloadingFileCompleted?.Invoke(null, new EventArgs());
+            }
+            DownloadingCompleted?.Invoke(null, new EventArgs());
+        });
+        thread.Start(); // VERY VERY IMPORTANT
     }
 
-    private static async Task DownloadFile(Uri uri, string fileName, string expectedHash, HashType hashType, DownloadProgressChangedEventHandler progressChanged, int attempt = 0)
+    private static async Task DownloadFile(Uri uri, string fileName, string expectedHash, HashType hashType, int attempt = 0)
     {
         if (attempt >= 5)
         {
@@ -86,7 +94,7 @@ public class UpdateManager
         response.EnsureSuccessStatusCode();
         var total = response.Content.Headers.ContentLength ?? -1L;
         var canReportProgress = total != -1;
-        using Stream contentStream = await response.Content.ReadAsStreamAsync(), fileStream = new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.ReadWrite, 8192, true);
+        using Stream contentStream = await response.Content.ReadAsStreamAsync(), fileStream = new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.ReadWrite, 8192);
 
         var totalRead = 0L;
         var totalReads = 0L;
@@ -100,19 +108,21 @@ public class UpdateManager
                 isMoreToRead = false;
                 continue;
             }
-            await fileStream.WriteAsync(buffer, 0, read);
+            fileStream.Write(buffer, 0, read);
             totalRead += read;
             totalReads++;
             if (totalReads % 2000 == 0 || canReportProgress)
             {
-                progressChanged.Invoke(null, new DownloadProgressChangedEventArgs(totalRead, total));
+                DownloadProgressChanged?.Invoke(null, new DownloadProgressChangedEventArgs(totalRead, total));
             }
+            await Task.Delay(1);
         }
         while (isMoreToRead);
+        fileStream.Close();
         var hash = Hasher.HashFile(fileName, hashType);
         if (hash != expectedHash)
         {
-            await DownloadFile(uri, fileName, expectedHash, hashType, progressChanged, ++attempt);
+            await DownloadFile(uri, fileName, expectedHash, hashType, ++attempt);
         }
     }
 

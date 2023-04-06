@@ -34,10 +34,20 @@ public static class CommandManager
 
     public static IReadOnlyCollection<IResult> ExecuteCommand(string input)
     {
-        return ExecuteCommand(input.Split(Settings.CommandSeparatorChar, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries));
+        return ExecuteCommand(input, null);
     }
 
-    private static IReadOnlyCollection<IResult> ExecuteCommand(string[] commands)
+    internal static IReadOnlyCollection<IResult> ExecuteCommandAsAdmin(string input)
+    {
+        return ExecuteCommand(input.Split(Settings.CommandSeparatorChar, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries), new InternalCommandSender() { ID = "Internal", IsAdmin = true });
+    }
+
+    internal static IReadOnlyCollection<IResult> ExecuteCommand(string input, ICommandSender sender)
+    {
+        return ExecuteCommand(input.Split(Settings.CommandSeparatorChar, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries), sender);
+    }
+
+    private static IReadOnlyCollection<IResult> ExecuteCommand(string[] commands, ICommandSender sender)
     {
         List<IResult> results = new List<IResult>();
         foreach (var command in commands)
@@ -59,8 +69,8 @@ public static class CommandManager
                     if (attribute is ChainedCommandAttribute cca) chainedCommand = cca.IsChained;
                 }
                 ICommandContext context = chainedCommand
-                        ? new ChainedCommandContext(command, CommandType.User, null, foundCommand.Command, PrevContext)
-                        : new CommandContext(command, CommandType.User, null, foundCommand.Command);
+                        ? new ChainedCommandContext(command, CommandType.User, sender, foundCommand.Command, PrevContext)
+                        : new CommandContext(command, CommandType.User, sender, foundCommand.Command);
                 var commandPreconditionResult = foundCommand.CheckPreconditions(context, Program.ServiceProvider);
                 var score = (commandPreconditionResult.IsSuccess ? foundCommand.Command.Priority : -1);
                 if (commandPreconditionResult is StoppedPreconditionResult and { IsSuccess: false })

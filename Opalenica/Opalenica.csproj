@@ -9,6 +9,7 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <SignAssembly>False</SignAssembly>
     <PackAsTool>False</PackAsTool>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -30,12 +31,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CustomUIDesign" Version="1.0.1" />
     <PackageReference Include="Kirun9.CommandParser" Version="1.0.3" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Renderers" Version="1.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ModuleBase\Opalenica.ModuleBase.csproj" />
     <ProjectReference Include="..\Opalenica.Core\Opalenica.Core.csproj" />
     <ProjectReference Include="..\Opalenica.Updater\Opalenica.Updater.csproj" />
   </ItemGroup>

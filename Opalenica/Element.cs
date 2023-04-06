@@ -6,9 +6,18 @@ using Kirun9.CommandParser.Results;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using Opalenica.ModuleBase;
-
 using System;
+
+public interface IElement
+{
+    string Name { get; set; }
+    Guid Id { get; set; }
+    bool IsSelected { get; }
+    void Select();
+    void Deselect();
+    void RegisterElement(Element element);
+    void UnregisterElement(Element element);
+}
 
 public class Element : IElement
 {

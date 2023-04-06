@@ -68,7 +68,7 @@ partial class UpdateQuestionDialog
             // 
             this.newVersonLabel.AutoSize = true;
             this.newVersonLabel.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.newVersonLabel.Location = new System.Drawing.Point(135, 87);
+            this.newVersonLabel.Location = new System.Drawing.Point(137, 89);
             this.newVersonLabel.Name = "newVersonLabel";
             this.newVersonLabel.Size = new System.Drawing.Size(50, 20);
             this.newVersonLabel.TabIndex = 13;
@@ -78,7 +78,7 @@ partial class UpdateQuestionDialog
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label5.Location = new System.Drawing.Point(12, 87);
+            this.label5.Location = new System.Drawing.Point(14, 89);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(93, 20);
             this.label5.TabIndex = 12;
@@ -88,7 +88,7 @@ partial class UpdateQuestionDialog
             // 
             this.currentVersionLabel.AutoSize = true;
             this.currentVersionLabel.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.currentVersionLabel.Location = new System.Drawing.Point(135, 63);
+            this.currentVersionLabel.Location = new System.Drawing.Point(137, 65);
             this.currentVersionLabel.Name = "currentVersionLabel";
             this.currentVersionLabel.Size = new System.Drawing.Size(50, 20);
             this.currentVersionLabel.TabIndex = 11;
@@ -98,7 +98,7 @@ partial class UpdateQuestionDialog
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label3.Location = new System.Drawing.Point(12, 63);
+            this.label3.Location = new System.Drawing.Point(14, 65);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(111, 20);
             this.label3.TabIndex = 10;
@@ -108,7 +108,7 @@ partial class UpdateQuestionDialog
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label2.Location = new System.Drawing.Point(286, 87);
+            this.label2.Location = new System.Drawing.Point(288, 89);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(234, 20);
             this.label2.TabIndex = 9;
@@ -119,10 +119,10 @@ partial class UpdateQuestionDialog
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Dock = System.Windows.Forms.DockStyle.Top;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Location = new System.Drawing.Point(2, 2);
             this.label1.Name = "label1";
             this.label1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 0);
-            this.label1.Size = new System.Drawing.Size(569, 49);
+            this.label1.Size = new System.Drawing.Size(565, 43);
             this.label1.TabIndex = 8;
             this.label1.Text = "New update found!";
             // 
@@ -135,6 +135,7 @@ partial class UpdateQuestionDialog
             this.CancelButton = this.NoButton;
             this.ClientSize = new System.Drawing.Size(569, 218);
             this.ControlBox = false;
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.NoButton);
             this.Controls.Add(this.YesButton);
             this.Controls.Add(this.newVersonLabel);
@@ -142,12 +143,14 @@ partial class UpdateQuestionDialog
             this.Controls.Add(this.currentVersionLabel);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
             this.DoubleBuffered = true;
+            this.DragControls.Add(this.label1);
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.Name = "UpdateQuestionDialog";
+            this.Padding = new System.Windows.Forms.Padding(2);
+            this.RestrainLocation = true;
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

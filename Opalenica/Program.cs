@@ -3,6 +3,7 @@
 namespace Opalenica;
 
 using System;
+using System.Reflection;
 using System.Threading;
 
 using Kirun9.CommandParser;
@@ -28,10 +29,8 @@ internal class Program
     private static void Main()
     {
         CommandManager.Initialize(Settings);
-
         ServiceCollection.AddSingleton(typeof(ILogger), new MultiLogger());
-        var message = new LogMessage(LoremIpsumGenerator.GenerateText(150), LOG_SOURCE, MessageLevel.Info, "Lorem Ipsum Generator");
-        ServiceProvider.GetRequiredService<ILogger>().Log(message);
+        ServiceProvider.GetRequiredService<ILogger>().Log(new LogMessage($"Starting Opalenica { Assembly.GetAssembly(typeof(Program)).GetName().Version } ...", LOG_SOURCE, MessageLevel.Info, "Program"));
 
         // To customize application configuration such as set high DPI settings or default font,
         // see https://aka.ms/applicationconfiguration.
@@ -53,6 +52,7 @@ internal class Program
 public class BasicCommandsModule : ModuleBase<ICommandContext>
 {
     [Command("exit")]
+    [Alias("koniec")]
     [Alias("wyjœcie")]
     [Alias("wyjscie")]
     [ChainedCommand]
@@ -63,6 +63,20 @@ public class BasicCommandsModule : ModuleBase<ICommandContext>
         Console.WriteLine("Exiting program ...");
         Application.ExitThread();
         Environment.Exit(0);
+    }
+
+    [Command("debugmode")]
+    public void DebugMode()
+    {
+        Program.Settings.DebugMode = !Program.Settings.DebugMode;
+        Console.WriteLine("Debug mode is " + (Program.Settings.DebugMode ? "enabled" : "disabled"));
+    }
+
+    [Command("debugmode")]
+    public void DebugMode(bool value)
+    {
+        Program.Settings.DebugMode = value;
+        Console.WriteLine("Debug mode is " + (Program.Settings.DebugMode ? "enabled" : "disabled"));
     }
 }
 
