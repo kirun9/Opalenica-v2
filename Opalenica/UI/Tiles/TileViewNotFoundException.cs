@@ -4,7 +4,7 @@ using System;
 using System.Runtime.Serialization;
 
 [Serializable]
-internal class TileViewNotFoundException : Exception
+public class TileViewNotFoundException : Exception
 {
     public TileViewNotFoundException()
     {

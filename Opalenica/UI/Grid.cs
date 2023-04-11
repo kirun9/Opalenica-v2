@@ -1,5 +1,11 @@
 ﻿namespace Opalenica.UI;
 
+using Kirun9.CommandParser;
+using Kirun9.CommandParser.Attributes;
+
+using Newtonsoft.Json;
+
+using Opalenica.Commands;
 using Opalenica.UI.Tiles;
 
 using System.Text.RegularExpressions;
@@ -7,6 +13,8 @@ using Timer = System.Windows.Forms.Timer;
 
 public class Grid
 {
+    public static Grid Instance { get; private set; }
+
     public const string SizeRegex = @"^([1-9][0-9]*)x([1-9][0-9]*)[,]([1-9][0-9]*)x([1-9][0-9]*)$";
     private Timer _timer = new Timer();
     public bool Pulse { get; private set; }
@@ -15,12 +23,7 @@ public class Grid
     public bool DebugMode => Program.Settings.DebugMode;
     public Padding Padding { get; set; }
 
-    public TileView CurrentView { get; private set; }
-
-    public void LoadView(TileView view)
-    {
-
-    }
+    public TileView CurrentView { get; set; }
 
     public Grid(string size)
     {
@@ -31,54 +34,54 @@ public class Grid
         _timer.Enabled = true;
 
         var sizes = Regex.Split(size, SizeRegex, RegexOptions.IgnoreCase);
-        if (sizes.Length is not 4) throw new ArgumentException("", nameof(size));
-        GridDimensions = new Size(Int32.Parse(sizes[0]), Int32.Parse(sizes[1]));
-        TileSize = new Size(Int32.Parse(sizes[2]), Int32.Parse(sizes[3]));
+        if (sizes.Length is not 6) throw new ArgumentException("", nameof(size));
+        GridDimensions = new Size(Int32.Parse(sizes[1]), Int32.Parse(sizes[2]));
+        TileSize = new Size(Int32.Parse(sizes[3]), Int32.Parse(sizes[4]));
+
+        Instance = this;
     }
-}
 
-/*
-public class PanelView
-{
-    public (string Width, string Height) GridSize { get; set; }
-    public ViewType ViewType { get; set; }
-    private Tile[,] _tiles;
-
-    public Tile this[int pos]
+    public IEnumerable<Tile> GetTiles()
     {
-        get { return _tiles.GetValue(pos) as Tile; }
-        set { _tiles.SetValue(value, pos); }
+        if (CurrentView is null) throw new InvalidOperationException("Cannot get tiles of null view");
+        foreach (var tile in CurrentView.GetAllTiles())
+        {
+            tile.SetContext(CurrentView);
+            yield return tile;
+        }
     }
 
-    public Tile this[int x, int y]
+    public Point CalculateGraphicTilePosition(Tile tile)
     {
-        get { return _tiles[x, y]; }
-        set { _tiles[x, y] = value; }
+        if (!tile.CheckContext(CurrentView))
+        {
+            if (tile.Locations.ContainsKey(CurrentView.ViewID))
+            {
+                tile.SetContext(CurrentView);
+            }
+            else throw new InvalidOperationException("Cannot calculate position of tile from other view");
+        }
+        return new Point(tile.Location.X * TileSize.Width + Padding.Left, tile.Location.Y * TileSize.Height + Padding.Top);
     }
-}
 
-public enum ViewType
-{
-    Normal,
-    Advanced
-}
-
-public class Tile
-{
-    public virtual void OnPaint(DrawingContext drawingContext)
+    public Tile GetTileFromPoint(Point point)
     {
-        Graphics g = drawingContext.Graphics;
-        using Pen p = new Pen(Colors.Red, 2);
-        p.Alignment = System.Drawing.Drawing2D.PenAlignment.Inset;
-        g.DrawRectangle(p, drawingContext.DrawingRectangle);
+        var x = (point.X - 2) / TileSize.Width;
+        var y = (point.Y - 2) / TileSize.Height;
+        return CurrentView.GetTile(new Point(x, y));
     }
 }
 
-public sealed class DrawingContext
+public class GridCommands : ModuleBase<ICommandContext>
 {
-    public Graphics Graphics { get; private set; }
-    public Size Size { get; set; }
-    public Point Point { get; set; }
-    public ViewType ViewType { get; set; }
-    public Rectangle DrawingRectangle => new Rectangle(Point, Size);
-}*/
+    [Command("reload grid")]
+    [Alias("rlg")]
+    [DebugCommand]
+    public void ReloadGrid()
+    {
+        var grid = Grid.Instance;
+        TileViewManager.UnregisterViews();
+        TileViewManager.ReadViews();
+        //grid.Load(grid.CurrentView);
+    }
+}

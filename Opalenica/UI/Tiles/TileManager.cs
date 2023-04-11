@@ -13,10 +13,33 @@ public class TileManager
                     registeredTiles[tile.Name].Locations[location.Key] = location.Value;
                 else
                     registeredTiles[tile.Name].Locations.Add(location.Key, location.Value);
-                TileViewManager.GetTileView(location.Key).RegisterTile(tile);
+                TileViewManager.GetTileView(location.Key).AddTile(tile);
             }
         }
         else
             registeredTiles.Add(tile.Name, tile);
+    }
+
+    public static void UnregisterTile(Tile tile, TileView view)
+    {
+        if (registeredTiles.ContainsKey(tile.Name))
+        {
+            if (tile.Locations.ContainsKey(view.ViewID))
+            {
+                tile.Locations.Remove(view.ViewID);
+            }
+            if (tile.Locations.Count == 0)
+            {
+                registeredTiles.Remove(tile.Name);
+            }
+        }
+    }
+
+    public static Tile GetTile(string tileName)
+    {
+        if (registeredTiles.ContainsKey(tileName))
+            return registeredTiles[tileName];
+        else
+            throw new TileNotFoundException(tileName);
     }
 }

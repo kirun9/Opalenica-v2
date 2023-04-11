@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Runtime.Serialization;
 
 [Serializable]
-internal class TileAlreadyOccupiedException : Exception
+public class TileAlreadyOccupiedException : Exception
 {
     private Point location;
     private Tile tile;

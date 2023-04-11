@@ -20,9 +20,19 @@ public class TileBuilder
         return this;
     }
 
+    public TileBuilder WithTileSize(Size size)
+    {
+        Tile.TileSize = size;
+        return this;
+    }
+
     public Tile BuildTile()
     {
         TileManager.RegisterTile(Tile);
+        foreach (var view in Tile.Locations.Keys)
+        {
+            TileViewManager.GetTileView(view).AddTile(Tile);
+        }
         return Tile;
     }
 }

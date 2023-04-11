@@ -29,17 +29,8 @@ partial class MainWindow
     private void InitializeComponent()
     {
             this.ExitButton = new System.Windows.Forms.Button();
-            this.pulpit = new Opalenica.UI.Pulpit(this);
+            this.pulpit = new Opalenica.UI.Pulpit();
             this.SuspendLayout();
-            //
-            // pulpit
-            //
-            this.pulpit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pulpit.Dock = DockStyle.Fill;
-            this.pulpit.Location = new System.Drawing.Point(0, 0);
-            this.pulpit.Name = "pulpit";
-            this.pulpit.Size = new System.Drawing.Size(1366, 768);
-            this.pulpit.TabIndex = 0;
             // 
             // ExitButton
             // 
@@ -50,7 +41,7 @@ partial class MainWindow
             this.ExitButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ExitButton.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.ExitButton.ForeColor = System.Drawing.Color.Red;
-            this.ExitButton.Location = new System.Drawing.Point(1320, 0);
+            this.ExitButton.Location = new System.Drawing.Point(1336, 0);
             this.ExitButton.Margin = new System.Windows.Forms.Padding(0);
             this.ExitButton.Name = "ExitButton";
             this.ExitButton.Size = new System.Drawing.Size(30, 30);
@@ -59,14 +50,24 @@ partial class MainWindow
             this.ExitButton.UseVisualStyleBackColor = true;
             this.ExitButton.Click += new System.EventHandler(this.ExitButton_Click);
             // 
+            // pulpit
+            // 
+            this.pulpit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pulpit.Location = new System.Drawing.Point(0, 0);
+            this.pulpit.Name = "pulpit";
+            this.pulpit.Size = new System.Drawing.Size(1366, 768);
+            this.pulpit.TabIndex = 0;
+            this.pulpit.Text = "pulpit";
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(1350, 729);
-            this.Controls.Add(this.pulpit);
+            this.ClientSize = new System.Drawing.Size(1366, 768);
             this.Controls.Add(this.ExitButton);
+            this.Controls.Add(this.pulpit);
+            this.DoubleBuffered = true;
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Location = new System.Drawing.Point(16, 0);

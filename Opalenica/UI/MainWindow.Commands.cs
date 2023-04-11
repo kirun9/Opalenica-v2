@@ -9,19 +9,24 @@ using Opalenica.Commands;
 
 public class MainWindowCommands : ModuleBase<ICommandContext>
 {
-    public static MainWindow MainWindow { get; set; }
-
     [Command("Fullscreen")]
     [Alias("fs")]
     [DebugCommand]
     public void Fullscreen()
     {
-        MainWindow.WindowState = MainWindow.WindowState switch
+        Program.MainWindow.WindowState = Program.MainWindow.WindowState switch
         {
             FormWindowState.Maximized => FormWindowState.Normal,
             FormWindowState.Minimized => FormWindowState.Maximized,
             FormWindowState.Normal    => FormWindowState.Maximized,
             _                         => FormWindowState.Maximized
         };
+    }
+
+    [Command("RepaintScreen")]
+    [DebugCommand]
+    public void RepaintScreen()
+    {
+        Program.MainWindow.Invoke(() => Program.MainWindow.Invalidate(true));
     }
 }

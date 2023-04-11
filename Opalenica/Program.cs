@@ -22,6 +22,7 @@ internal class Program
     public static IServiceProvider ServiceProvider => ServiceCollection.BuildServiceProvider();
 
     internal static string LOG_SOURCE = "Opalenica";
+    internal static MainWindow MainWindow { get; set; }
 
     static ILogger Logger { get; set; } = ServiceProvider.GetService<ILogger>();
 
@@ -39,7 +40,7 @@ internal class Program
         Application.SetHighDpiMode(HighDpiMode.DpiUnawareGdiScaled);
         Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
         Application.ThreadException += Application_ThreadException;
-        Application.Run(new MainWindow(ServiceProvider));
+        Application.Run(MainWindow = new MainWindow(ServiceProvider));
         //Console.ReadLine();
     }
 

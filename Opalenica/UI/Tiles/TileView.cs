@@ -5,6 +5,7 @@ public class TileView
     public string ViewID { get; set; }
     public Size Size { get; set; }
     public Tile[,] Tiles { get; set; }
+    public ViewType ViewType { get; set; }
 
     public TileView(string viewID, Size size)
     {
@@ -14,18 +15,50 @@ public class TileView
         TileViewManager.RegisterView(this);
     }
 
-    private Tile GetTile(Point location)
+    public IEnumerable<Tile> GetAllTiles()
+    {
+        for (int i = 0; i < Tiles.GetLength(0); i++)
+            for (int j = 0; j < Tiles.GetLength(1); j++)
+                yield return GetTile(new Point(i, j));
+    }
+
+
+    public IEnumerable<Tile> GetTiles()
+    {
+        for (int i = 0; i < Tiles.GetLength(0); i++)
+            for (int j = 0; j < Tiles.GetLength(1); j++)
+                if (Tiles[i, j] is not null and not EmptyTile)
+                    yield return GetTile(new Point(i, j));
+    }
+
+    public Tile GetTile(Point location)
     {
         return Tiles[location.X, location.Y] switch
         {
             OccupiedTile ot => ot.MainTile,
-            EmptyTile => new EmptyTile(),
-            null => new EmptyTile(),
+            EmptyTile => new EmptyTile() { Locations = { { ViewID, location } }, ViewID = ViewID },
+            null => new EmptyTile() { Locations = { { ViewID, location } }, ViewID = ViewID },
             var tile => tile
         };
     }
 
-    public void RegisterTile(Tile tile)
+    public void RemoveTile(Tile tile)
+    {
+        var location = tile.Locations[ViewID];
+        if (GetTile(location) is not null and not EmptyTile)
+        {
+            for (int x = 0; x < tile.TileSize.Width; x++)
+            {
+                for (int y = 0; y < tile.TileSize.Height; y++)
+                {
+                    if (x == 0 && y == 0) continue;
+                    Tiles[location.X + x, location.Y + y] = null;
+                }
+            }
+        }
+    }
+
+    public void AddTile<T>(T tile) where T : Tile
     {
         var location = tile.Locations[ViewID];
         if (GetTile(location) is not null and not EmptyTile)

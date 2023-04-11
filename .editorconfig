@@ -14,3 +14,9 @@ dotnet_diagnostic.SA1208.severity = error
 
 # CS1591: Missing XML comment for publicly visible type or member
 dotnet_diagnostic.CS1591.severity = none
+
+# NUnit2005: Consider using Assert.That(actual, Is.EqualTo(expected)) instead of Assert.AreEqual(expected, actual)
+dotnet_diagnostic.NUnit2005.severity = none
+
+# NUnit2019: Consider using Assert.That(actual, Is.Not.Null) instead of Assert.IsNotNull(actual)
+dotnet_diagnostic.NUnit2005.severity = none

@@ -4,7 +4,7 @@ using System;
 using System.Runtime.Serialization;
 
 [Serializable]
-internal class DuplicateTileViewException : Exception
+public class DuplicateTileViewException : Exception
 {
     public DuplicateTileViewException()
     {

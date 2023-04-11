@@ -18,7 +18,10 @@ public partial class MainWindow : Form
     {
         InitializeComponent();
         updateTimer = new Timer() { Interval = 100, Enabled = true };
-        updateTimer.Tick += (_, _) => { Invalidate(); };
+        updateTimer.Tick += (_, _) => {
+            Invalidate(true);
+        };
+        updateTimer.Start();
     }
 
     private void MainWindow_Load(object sender, EventArgs e)
@@ -64,6 +67,9 @@ public partial class MainWindow : Form
 
     private void ExitButton_Click(Object sender, EventArgs e)
     {
-        CommandManager.ExecuteCommand("exit");
+        CommandManager.ExecuteCommand("exit", new InternalCommandSender()
+        {
+            IsAdmin = true
+        });
     }
 }

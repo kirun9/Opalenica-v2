@@ -15,7 +15,7 @@ public class DebugCommandAttribute : PreconditionAttribute
     public override PreconditionResult CheckPermissions(ICommandContext context, CommandInfo command, IServiceProvider services)
     {
         var settings = services.GetService<Settings>();
-        return context.Sender is InternalCommandSender and { IsAdmin: true } || settings.DebugMode
+        return context.Sender is not null and InternalCommandSender and { IsAdmin: true } || settings.DebugMode
             ? PreconditionResult.FromSuccess()
             : PreconditionResult.FromError("Debug mode is not enabled.");
     }
