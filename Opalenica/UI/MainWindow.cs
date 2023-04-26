@@ -22,6 +22,9 @@ public partial class MainWindow : Form
             Invalidate(true);
         };
         updateTimer.Start();
+
+        //SWDRForm swdrForm = new SWDRForm(ServiceProvider);
+        //swdrForm.Show();
     }
 
     private void MainWindow_Load(object sender, EventArgs e)
