@@ -10,7 +10,7 @@ internal class FileLogger : ILogger
 
     internal FileLogger()
     {
-        _logFile = Path.Combine("logs", DateTime.Now.ToString("yyyy/MM/dd") + ".log");
+        _logFile = Path.Combine("logs", DateTime.Now.ToString("yyyy/MM/dd HH-mm") + ".log");
     }
 
     public void Log(IMessage message)

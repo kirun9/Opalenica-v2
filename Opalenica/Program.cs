@@ -4,6 +4,7 @@ namespace Opalenica;
 
 using System;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 using Kirun9.CommandParser;
@@ -29,8 +30,8 @@ internal class Program
     [STAThread]
     private static void Main()
     {
-        CommandManager.Initialize(Settings);
         ServiceCollection.AddSingleton(typeof(ILogger), new MultiLogger());
+        CommandManager.Initialize(Settings);
         ServiceProvider.GetRequiredService<ILogger>().Log(new LogMessage($"Starting Opalenica { Assembly.GetAssembly(typeof(Program)).GetName().Version } ...", LOG_SOURCE, MessageLevel.Info, "Program"));
 
         // To customize application configuration such as set high DPI settings or default font,
@@ -41,17 +42,18 @@ internal class Program
         Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
         Application.ThreadException += Application_ThreadException;
         Application.Run(MainWindow = new MainWindow(ServiceProvider));
-        //Console.ReadLine();
     }
 
     private static void Application_ThreadException(Object sender, ThreadExceptionEventArgs e)
     {
-        Console.WriteLine(e.Exception.ToString());
+        Logger.Log(new LogMessage(e.Exception.ToString(), "InternalThread", MessageLevel.Error));
     }
 }
 
 public class BasicCommandsModule : ModuleBase<ICommandContext>
 {
+    public ILogger Logger { get; set; }
+
     [Command("exit")]
     [Alias("koniec")]
     [Alias("wyjœcie")]
@@ -61,7 +63,7 @@ public class BasicCommandsModule : ModuleBase<ICommandContext>
     [BreakChainedCommands]
     public void Exit()
     {
-        Console.WriteLine("Exiting program ...");
+        Log("Exiting program ...");
         Application.ExitThread();
         Environment.Exit(0);
     }
@@ -70,14 +72,19 @@ public class BasicCommandsModule : ModuleBase<ICommandContext>
     public void DebugMode()
     {
         Program.Settings.DebugMode = !Program.Settings.DebugMode;
-        Console.WriteLine("Debug mode is " + (Program.Settings.DebugMode ? "enabled" : "disabled"));
+        Log("Debug mode is " + (Program.Settings.DebugMode ? "enabled" : "disabled"));
     }
 
     [Command("debugmode")]
     public void DebugMode(bool value)
     {
         Program.Settings.DebugMode = value;
-        Console.WriteLine("Debug mode is " + (Program.Settings.DebugMode ? "enabled" : "disabled"));
+        Log("Debug mode is " + (Program.Settings.DebugMode ? "enabled" : "disabled"));
+    }
+
+    private void Log(string message, [CallerMemberName] string callerName = "")
+    {
+        Logger.Log(new LogMessage(message, callerName, MessageLevel.Info));
     }
 }
 

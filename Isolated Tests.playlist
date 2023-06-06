@@ -24,9 +24,9 @@
                   <Property Name="Class" Value="Tests" />
                   <Rule Match="Any">
                     <Rule Match="All">
-                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="Tests.Tests.GridTest" />
+                      <Property Name="TestWithNormalizedFullyQualifiedName" Value="Tests.Tests.SerializeDeserializeTileView_Success" />
                       <Rule Match="Any">
-                        <Property Name="DisplayName" Value="GridTest" />
+                        <Property Name="DisplayName" Value="SerializeDeserializeTileView_Success" />
                       </Rule>
                     </Rule>
                   </Rule>

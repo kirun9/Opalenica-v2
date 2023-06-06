@@ -1,6 +1,5 @@
 ﻿/// Written by https://stackoverflow.com/users/1310846/g-y
-
-namespace System;
+namespace Opalenica.Misc;
 
 using System.ComponentModel;
 using System.Runtime.InteropServices;

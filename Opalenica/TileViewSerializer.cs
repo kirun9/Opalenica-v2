@@ -4,6 +4,8 @@ using Newtonsoft.Json;
 
 using Opalenica.UI.Tiles;
 
+using static Opalenica.Elements.Element;
+
 public static class TileViewSerializer
 {
     public static string Serialize(TileView tileView)
@@ -11,8 +13,9 @@ public static class TileViewSerializer
         return JsonConvert.SerializeObject(tileView, Formatting.Indented, new JsonSerializerSettings
         {
             TypeNameHandling = TypeNameHandling.Auto,
-            NullValueHandling = NullValueHandling.Include,
-            DefaultValueHandling = DefaultValueHandling.Include
+            NullValueHandling = NullValueHandling.Ignore,
+            DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
+            Converters = { new TileViewConverter(), new ElementConverter() }
         });
     }
 
@@ -22,7 +25,8 @@ public static class TileViewSerializer
         {
             TypeNameHandling = TypeNameHandling.Auto,
             NullValueHandling = NullValueHandling.Include,
-            DefaultValueHandling = DefaultValueHandling.Include
+            DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
+            Converters = { new TileViewConverter(), new ElementConverter() }
         });
     }
 }

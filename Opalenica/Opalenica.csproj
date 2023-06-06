@@ -10,6 +10,7 @@
     <SignAssembly>False</SignAssembly>
     <PackAsTool>False</PackAsTool>
     <AssemblyVersion>0.0.0.3</AssemblyVersion>
+    <Configurations>Debug;Release;Debug EFU</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -17,9 +18,17 @@
     <Deterministic>True</Deterministic>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug EFU|AnyCPU'">
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <Deterministic>True</Deterministic>
+    <Optimize>False</Optimize>
+    <DefineConstants>TRACE;DEBUG;EFU</DefineConstants>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
     <Deterministic>True</Deterministic>
+    <Optimize>True</Optimize>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,7 +41,7 @@
 
   <ItemGroup>
     <PackageReference Include="CustomUIDesign" Version="1.0.1" />
-    <PackageReference Include="Kirun9.CommandParser" Version="1.0.3" />
+    <PackageReference Include="Kirun9.CommandParser" Version="1.0.5" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Renderers" Version="1.0.1" />
@@ -40,6 +49,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Opalenica.Core\Opalenica.Core.csproj" />
+    <ProjectReference Include="..\Opalenica.Graphics\Opalenica.Graphic.csproj" />
     <ProjectReference Include="..\Opalenica.Updater\Opalenica.Updater.csproj" />
   </ItemGroup>
 

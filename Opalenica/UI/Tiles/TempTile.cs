@@ -38,6 +38,9 @@ public class TempTile : Tile, ILeftMouseAction, IContextMenu
         ToolStripMenuItem item = new ToolStripMenuItem("Fullscreen");
         item.Click += (_, _) => CommandManager.ExecuteCommand($"fullscreen", new InternalCommandSender() { IsAdmin = true, ID = $"{this.GetType().Name}.GetMenuStrip.Fullscreen" });
         strip.Items.Add(item);
+        ToolStripMenuItem item2 = new ToolStripMenuItem("SWDR");
+        item2.Click += (_, _) => CommandManager.ExecuteCommand($"SWDR", new InternalCommandSender() { IsAdmin = true, ID = $"{this.GetType().Name}.GetMenuStrip.SWDR" });
+        strip.Items.Add(item2);
         return strip;
     }
 }

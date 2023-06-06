@@ -3,6 +3,7 @@ namespace Tests;
 using NUnit.Framework;
 
 using Opalenica;
+using Opalenica.Elements;
 using Opalenica.UI;
 using Opalenica.UI.Tiles;
 
@@ -31,13 +32,13 @@ public class Tests
         Assert.IsFalse(Regex.IsMatch("1x0,1x1", Grid.SizeRegex));
     }
 
-    [SetUp]
+    /*[SetUp]
     public void UnregisterEveryTileAndView()
     {
         TileViewManager.UnregisterViews();
         if (Directory.Exists("Views"))
             Directory.Delete("Views", true);
-    }
+    }*/
 
 
     [Test]
@@ -96,6 +97,7 @@ public class Tests
         var size = new Size(2, 2);
         var view = new TileView(viewID, size);
         var tile1 = new TileBuilder().WithName("tile1").WithLocation(view, new Point(0, 0)).BuildTile();
+        view.AddTile(new TrackTile() { Name = "it100Tile", Locations = { { "test_view", new Point(1, 0) } }, TileSize = new Size(1, 1), Track = new Track() { Name = "it100", Data = TrackData.BrakDanych, PermanentData = new Dictionary<string, object>() { { Track.DataNames.Kontrola.ToString(), (object)true }, { Track.DataNames.Zamkniety.ToString(), (object)true } } }, IsHorizontal = true });
         var tile2 = new TileBuilder().WithName("tile2").WithLocation(view, new Point(1, 1)).BuildTile();
 
         // Act
@@ -110,6 +112,7 @@ public class Tests
         Assert.IsNotNull(deserialized.Tiles);
         Assert.AreEqual(tile1.Name, deserialized.Tiles[0, 0].Name);
         Assert.AreEqual(tile2.Name, deserialized.Tiles[1, 1].Name);
+        Assert.IsTrue((bool)((view.GetTile(new Point(1, 0)) as TrackTile).Track.PermanentData[Track.DataNames.Kontrola.ToString()]));
     }
 
     [Test]

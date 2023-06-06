@@ -15,7 +15,13 @@ public class TileViewManager
         if (registeredViews.ContainsKey(view.ViewID))
             throw new DuplicateTileViewException(view.ViewID);
         else
+        {
             registeredViews.Add(view.ViewID, view);
+            foreach (var tile in view.GetTiles())
+            {
+                TileManager.RegisterTile(tile);
+            }
+        }
     }
 
     public static TileView GetTileView(string viewID)
@@ -28,13 +34,14 @@ public class TileViewManager
 
     public static void ReadViews()
     {
+        if (!Directory.Exists("views")) return;
 #if !DEBUG
-        foreach (var file in Directory.GetFiles("Views", "*.dat"))
+        foreach (var file in Directory.GetFiles("views", "*.dat"))
         {
             using StreamReader reader = new StreamReader(new GZipStream(File.OpenRead(file), CompressionMode.Decompress));
             var view = TileViewSerializer.Deserialize(reader.ReadToEnd());
 #else
-        foreach (var file in Directory.GetFiles("Views", "*.json"))
+            foreach (var file in Directory.GetFiles("views", "*.json"))
         {
             var view = TileViewSerializer.Deserialize(File.ReadAllText(file));
 #endif
@@ -49,14 +56,14 @@ public class TileViewManager
     {
         foreach ((_, var v) in registeredViews)
         {
-            if (!Directory.Exists("Views"))
-                Directory.CreateDirectory("Views");
+            if (!Directory.Exists("views"))
+                Directory.CreateDirectory("views");
 #if !DEBUG
-            using StreamWriter writer = new StreamWriter(new GZipStream(File.OpenWrite($"Views/{v.ViewID}.dat"), CompressionLevel.Fastest));
+            using StreamWriter writer = new StreamWriter(new GZipStream(File.OpenWrite($"views/{v.ViewID}.dat"), CompressionLevel.Fastest));
             writer.Write(TileViewSerializer.Serialize(v));
             writer.Flush();
 #else
-            File.WriteAllText($"Views/{v.ViewID}.json", TileViewSerializer.Serialize(v));
+            File.WriteAllText($"views/{v.ViewID}.json", TileViewSerializer.Serialize(v));
 #endif
         }
     }

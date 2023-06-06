@@ -8,6 +8,9 @@ public class UpdateInfo
     [XmlAttribute("AppID")]
     public string ApplicationID { get; set; }
 
+    [XmlAttribute("ForcedUpdate")]
+    public bool ForcedUpdate { get; set; }
+
     [XmlElement("Version")]
     public string Version { get; set; }
 

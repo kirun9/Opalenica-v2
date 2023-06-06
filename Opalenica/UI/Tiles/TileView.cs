@@ -1,5 +1,11 @@
 ﻿namespace Opalenica.UI.Tiles;
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+using System;
+using System.Reflection;
+
 public class TileView
 {
     public string ViewID { get; set; }
@@ -75,5 +81,50 @@ public class TileView
                 }
             }
         }
+    }
+}
+
+public class TileViewConverter : JsonConverter<TileView>
+{
+    public override TileView? ReadJson(JsonReader reader, Type objectType, TileView? existingValue, Boolean hasExistingValue, JsonSerializer serializer)
+    {
+        var jsonObject = JObject.Load(reader);
+        TileView tileView = new TileView(jsonObject[nameof(TileView.ViewID)].Value<string>(), jsonObject[nameof(TileView.Size)].ToObject<Size>());
+        tileView.ViewType = serializer.Deserialize<ViewType>(jsonObject[nameof(TileView.ViewType)].CreateReader());
+        JArray array = (JArray)jsonObject[nameof(TileView.Tiles)];
+        foreach (var tile in array)
+        {
+            if (tile.Type != JTokenType.Null)
+                tileView.AddTile(serializer.Deserialize<Tile>(tile.CreateReader()));
+        }
+        return tileView;
+    }
+
+    public override void WriteJson(JsonWriter writer, TileView? value, JsonSerializer serializer)
+    {
+        writer.WriteStartObject();
+        writer.WritePropertyName(nameof(TileView.ViewID));
+        writer.WriteValue(value.ViewID);
+        writer.WritePropertyName(nameof(TileView.Size));
+        serializer.Serialize(writer, value.Size);
+        writer.WritePropertyName(nameof(TileView.ViewType));
+        serializer.Serialize(writer, value.ViewType);
+        writer.WritePropertyName(nameof(TileView.Tiles));
+        writer.WriteStartArray();
+        for (int i = 0; i < value.Tiles.GetLength(0); i++)
+        {
+            for (int j = 0; j < value.Tiles.GetLength(1); j++)
+            {
+                var tile = value.Tiles[i, j];
+                if (tile is not null and not EmptyTile and not OccupiedTile)
+                {
+                    if (tile.GetType().GetCustomAttribute<DoNotSaveTileAttribute>() is null)
+                        serializer.Serialize(writer, tile);
+                }
+            }
+        }
+
+        writer.WriteEndArray();
+        writer.WriteEndObject();
     }
 }

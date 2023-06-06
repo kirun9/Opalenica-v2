@@ -29,8 +29,3 @@ public class Tile
         return view.ViewID == ViewID;
     }
 }
-
-public class ExtendedTile : Tile
-{
-    public string MoreData { get; set; }
-}

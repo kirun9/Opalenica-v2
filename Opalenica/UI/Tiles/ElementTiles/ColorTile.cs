@@ -1,9 +1,7 @@
-﻿namespace Opalenica.UI.Tiles;
+﻿namespace Opalenica.UI.Tiles.ElementTiles;
 
 using Opalenica.Commands;
 using Opalenica.UI.Tiles.Interfaces;
-
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 internal class ColorTile : Tile, IContextMenu
 {
@@ -30,7 +28,7 @@ internal class ColorTile : Tile, IContextMenu
     {
         ContextMenuStrip strip = new ContextMenuStrip();
         ToolStripMenuItem item = new ToolStripMenuItem("Przerysuj Ekran");
-        item.Click += (_, _) => CommandManager.ExecuteCommand($"RepaintScreen", new InternalCommandSender() { IsAdmin = true, ID = $"{this.GetType().Name}.GetMenuStrip.RepaintScreen" });
+        item.Click += (_, _) => CommandManager.ExecuteCommand($"RepaintScreen", new InternalCommandSender() { IsAdmin = true, ID = $"{GetType().Name}.GetMenuStrip.RepaintScreen" });
         strip.Items.Add(item);
         return strip;
     }

@@ -2,7 +2,12 @@
 
 namespace Opalenica.UI;
 
+using Kirun9.CommandParser.Results;
+
+using Microsoft.Extensions.DependencyInjection;
+
 using Opalenica.Commands;
+using Opalenica.Logging;
 using Opalenica.Updater;
 
 using System.Reflection;
@@ -13,6 +18,11 @@ public partial class MainWindow : Form
 {
     private Timer updateTimer;
     private static Screen mainScreen;
+    private SWDRForm swdrForm;
+
+#if EFU
+    private Timer EFUTimer;
+#endif
 
     public MainWindow(IServiceProvider ServiceProvider)
     {
@@ -23,8 +33,18 @@ public partial class MainWindow : Form
         };
         updateTimer.Start();
 
-        //SWDRForm swdrForm = new SWDRForm(ServiceProvider);
-        //swdrForm.Show();
+#if EFU
+        EFUTimer = new Timer() { Interval = (int) TimeSpan.FromMinutes(10).TotalMilliseconds, Enabled = true };
+        EFUTimer.Tick += (_, _) => { CheckForUpdate(); };
+        EFUTimer.Start();
+#endif
+
+        if (Settings.Default.EnableSWDR)
+        {
+            ServiceProvider.GetService<ILogger>().Log(new LogMessage("Starting SWDR ...", Program.LOG_SOURCE, MessageLevel.Info));
+            swdrForm = new SWDRForm(ServiceProvider);
+            swdrForm.Show();
+        }
     }
 
     private void MainWindow_Load(object sender, EventArgs e)
@@ -37,6 +57,13 @@ public partial class MainWindow : Form
 
     private void MainWindow_Shown(object sender, EventArgs e)
     {
+#if !EFU
+        CheckForUpdate();
+#endif
+    }
+
+    private void CheckForUpdate()
+    {
         if (Settings.Default.CheckForUpdates)
         {
             if (UpdateManager.IsServerAvaible())
@@ -45,20 +72,32 @@ public partial class MainWindow : Form
                 {
                     using UpdateQuestionDialog updateQuestionDialog = new UpdateQuestionDialog();
                     updateQuestionDialog.newVersonLabel.Text = updateInfo.Version;
+#if EFU
+                    if (updateInfo.ForcedUpdate)
+                    {
+                        PerformUpdate(updateInfo);
+                        return;
+                    }
+#endif
                     var result = updateQuestionDialog.ShowDialog(this);
                     if (result == DialogResult.Yes)
                     {
-                        using UpdateDialog updateDialog = new UpdateDialog(updateInfo);
-                        result = updateDialog.ShowDialog(this);
-                        if (result == DialogResult.Continue)
-                        {
-                            // I don't know XD
-                            // Maybe not needed ???
-                            // Or maybe update cancel implementation ...
-                        }
+                        PerformUpdate(updateInfo);
                     }
                 }
             }
+        }
+    }
+
+    private void PerformUpdate(UpdateInfo updateInfo)
+    {
+        using UpdateDialog updateDialog = new UpdateDialog(updateInfo);
+        var result = updateDialog.ShowDialog(this);
+        if (result == DialogResult.Continue)
+        {
+            // I don't know XD
+            // Maybe not needed ???
+            // Or maybe update cancel implementation ...
         }
     }
 
@@ -74,5 +113,21 @@ public partial class MainWindow : Form
         {
             IsAdmin = true
         });
+    }
+
+    internal void ToggleSWDRForm()
+    {
+        if (swdrForm is not null)
+        {
+            swdrForm.Hide();
+            swdrForm.Close();
+            swdrForm.Dispose();
+            swdrForm = null;
+        }
+        else
+        {
+            swdrForm = new SWDRForm(Program.ServiceProvider);
+            swdrForm.Show(this);
+        }
     }
 }

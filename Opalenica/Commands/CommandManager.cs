@@ -7,6 +7,9 @@ using Kirun9.CommandParser.Results;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using Opalenica.Elements;
+using Opalenica.Logging;
+
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -29,7 +32,7 @@ public static class CommandManager
         Program.ServiceCollection.AddSingleton(CommandService);
         CommandService.CommandExecuted += CommandExecuted;
         CommandService.AddModules(typeof(Program).Assembly, Program.ServiceProvider);
-        CommandService.AddTypeReader<Element>(new ElementReader());
+        CommandService.AddTypeReader<Element>(new Element.ElementReader());
     }
 
     public static IReadOnlyCollection<IResult> ExecuteCommand(string input)
@@ -116,57 +119,6 @@ public static class CommandManager
         return results;
     }
 
-    /*internal static void ExecuteCommand(string input)
-    {
-        var commands = CommandService.Search(input);
-        if (commands.IsSuccess)
-        {
-            var command = commands.Commands.First();
-            var isChained = false;
-            foreach (var attribute in command.Command.Attributes)
-            {
-                if (attribute is ChainedCommandAttribute)
-                    isChained = isChained || attribute is ChainedCommandAttribute;
-            }
-            ICommandContext context = isChained
-                ? new ChainedCommandContext(input, CommandType.User, null, command.Command, prevContext)
-                : new CommandContext(input, CommandType.User, null, command.Command);
-            if (context is ChainedCommandContext ccc)
-            {
-                if (ccc.IsSameCommand)
-                {
-
-                }
-            }
-            try
-            {
-                var commandResult = CommandService.Execute(context, 0, Program.ServiceProvider);
-                if (!commandResult.IsSuccess)
-                {
-                    if (commandResult is ExecuteResult executeResult)
-                    {
-                        var ex = executeResult.Exception;
-                        Console.Error.WriteLine($"Exception in {ex.TargetSite.DeclaringType.Name} inside {ex.TargetSite.DeclaringType.Assembly.GetName()}\n{typeof(Program).FullName}: {ex.Message}\nCommand: {context.Content}\nBy: {context.Sender?.ID}\nError Reason: {commandResult.ErrorMessage}");
-#if DEBUG
-                        Debugger.Break();
-#endif
-                    }
-                    else
-                    {
-                        Console.Error.WriteLine($"Unrecognized exception:\nCommand: {context.Content}\nBy: {context.Sender?.ID}\nError Reason: {commandResult.ErrorMessage}");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.Error.WriteLine($"Exception in {ex.TargetSite.DeclaringType.Name} inside {ex.TargetSite.DeclaringType.Assembly.GetName().Name}:\n{typeof(Program).FullName}: {ex.Message}\nCommand: {context.Content}\nBy: {context.Sender?.ID}");
-#if DEBUG
-                Debugger.Break();
-#endif
-            }
-        }
-    }*/
-
     private static void CommandExecuted(Optional<CommandInfo> command, ICommandContext context, IResult result)
     {
         if (command.IsSpecified)
@@ -175,7 +127,7 @@ public static class CommandManager
         }
         else
         {
-            Console.WriteLine("Command not specified.");
+            Log("Command not specified.");
         }
     }
 
@@ -183,12 +135,17 @@ public static class CommandManager
     {
         if (result.IsSuccess)
         {
-            Console.WriteLine($"Command {command.Name} executed successfully.");
+            Log($"Command {command.Name} executed successfully.");
         }
         else
         {
-            Console.WriteLine($"Command {command.Name} failed to execute.");
+            Log($"Command {command.Name} failed to execute.");
         }
+    }
+
+    private static void Log(string message)
+    {
+        Program.ServiceProvider.GetService<ILogger>().Log(new LogMessage(message, "CommandHandler", MessageLevel.Info));
     }
 }
 
