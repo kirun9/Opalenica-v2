@@ -1,12 +1,9 @@
 ﻿namespace Opalenica.UI.Tiles;
+using System.Linq;
+using Opalenica.Elements;
+using Newtonsoft.Json.Serialization;
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-
-using System;
-using System.Reflection;
-
-public class TileView
+public partial class TileView
 {
     public string ViewID { get; set; }
     public Size Size { get; set; }
@@ -82,9 +79,27 @@ public class TileView
             }
         }
     }
+
+    private IEnumerable<Element> SearchElements()
+    {
+        List<Element> elements = new List<Element>();
+        foreach (var tile in Tiles)
+        {
+            if (tile is IHasElements elementTile)
+            {
+                var tileElements = elementTile.GetElements();
+                foreach (var tileElement in tileElements)
+                {
+                    if (!elements.Contains(tileElement)) elements.Add(tileElement);
+                }
+            }
+        }
+        return elements;
+    }
+
 }
 
-public class TileViewConverter : JsonConverter<TileView>
+/*public class TileViewConverter : JsonConverter<TileView>
 {
     public override TileView? ReadJson(JsonReader reader, Type objectType, TileView? existingValue, Boolean hasExistingValue, JsonSerializer serializer)
     {
@@ -100,31 +115,31 @@ public class TileViewConverter : JsonConverter<TileView>
         return tileView;
     }
 
-    public override void WriteJson(JsonWriter writer, TileView? value, JsonSerializer serializer)
+    public override void WriteJson(JsonWriter json, TileView? tileView, JsonSerializer serializer)
     {
-        writer.WriteStartObject();
-        writer.WritePropertyName(nameof(TileView.ViewID));
-        writer.WriteValue(value.ViewID);
-        writer.WritePropertyName(nameof(TileView.Size));
-        serializer.Serialize(writer, value.Size);
-        writer.WritePropertyName(nameof(TileView.ViewType));
-        serializer.Serialize(writer, value.ViewType);
-        writer.WritePropertyName(nameof(TileView.Tiles));
-        writer.WriteStartArray();
-        for (int i = 0; i < value.Tiles.GetLength(0); i++)
+        json.WriteStartObject();
+        json.WritePropertyName(nameof(TileView.ViewID));
+        json.WriteValue(tileView.ViewID);
+        json.WritePropertyName(nameof(TileView.Size));
+        serializer.Serialize(json, tileView.Size);
+        json.WritePropertyName(nameof(TileView.ViewType));
+        serializer.Serialize(json, tileView.ViewType);
+        json.WritePropertyName(nameof(TileView.Tiles));
+        json.WriteStartArray();
+        for (int i = 0; i < tileView.Tiles.GetLength(0); i++)
         {
-            for (int j = 0; j < value.Tiles.GetLength(1); j++)
+            for (int j = 0; j < tileView.Tiles.GetLength(1); j++)
             {
-                var tile = value.Tiles[i, j];
+                var tile = tileView.Tiles[i, j];
                 if (tile is not null and not EmptyTile and not OccupiedTile)
                 {
                     if (tile.GetType().GetCustomAttribute<DoNotSaveTileAttribute>() is null)
-                        serializer.Serialize(writer, tile);
+                        serializer.Serialize(json, tile);
                 }
             }
         }
 
-        writer.WriteEndArray();
-        writer.WriteEndObject();
+        json.WriteEndArray();
+        json.WriteEndObject();
     }
-}
+}*/

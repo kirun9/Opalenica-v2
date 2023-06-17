@@ -5,7 +5,7 @@ using Opalenica.UI.Tiles.Interfaces;
 
 using System.Windows.Forms;
 
-public class TrackTile : Tile, IContextMenu
+public class TrackTile : Tile, IContextMenu, IHasElements
 {
     public Track Track { get; set; }
     public bool IsHorizontal { get; set; }
@@ -69,5 +69,10 @@ public class TrackTile : Tile, IContextMenu
         ToolStripMenuItem item = new ToolStripMenuItem("Test");
         strip.Items.Add(item);
         return strip;
+    }
+
+    public Element[] GetElements()
+    {
+        return new[] { Track };
     }
 }

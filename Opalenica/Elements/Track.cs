@@ -1,5 +1,7 @@
 ﻿namespace Opalenica.Elements;
 
+using Newtonsoft.Json;
+
 using Opalenica.UI;
 
 using System.Drawing.Drawing2D;
@@ -15,12 +17,14 @@ public class Track : Element
     public TrackData Data { get; set; }
     public TrackType Type { get; set; }
 
+    [JsonIgnore]
     public bool Zamkniety
     {
         get => (bool)this[DataNames.Zamkniety];
         set => this[DataNames.Zamkniety] = value;
     }
 
+    [JsonIgnore]
     public bool Kontrola
     {
         get => (bool)this[DataNames.Kontrola];

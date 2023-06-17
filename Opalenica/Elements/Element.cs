@@ -87,15 +87,16 @@ public class Element
     }
 
     // Serializer related class
-    public class ElementConverter : JsonConverter<Element>
+    public class ElementJsonConverter : JsonConverter<Element>
     {
         public override Element? ReadJson(JsonReader reader, Type objectType, Element? existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             var jsonObject = JObject.Load(reader);
             var element = new Element();
             element.Name = (string)jsonObject["Name"];
-            RegisterElement(element);
-            element.PermanentData = jsonObject["PermanentData"].ToObject<Dictionary<string, object>>();
+
+            // Do not deserialize PermanentData for now, it will be handled during Tile deserialization
+
             return element;
         }
 
@@ -104,11 +105,16 @@ public class Element
             writer.WriteStartObject();
             writer.WritePropertyName("Name");
             writer.WriteValue(value.Name);
-            writer.WritePropertyName("PermanentData");
-            serializer.Serialize(writer, value.PermanentData);
+
+            // Do not serialize PermanentData for now, it will be handled during Tile serialization
+
             writer.WriteEndObject();
         }
+
+        public override bool CanRead => true;
+        public override bool CanWrite => true;
     }
+
 
     // Command related class
     public class ElementReader : TypeReader

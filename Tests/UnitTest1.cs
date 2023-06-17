@@ -100,11 +100,15 @@ public class Tests
         view.AddTile(new TrackTile() { Name = "it100Tile", Locations = { { "test_view", new Point(1, 0) } }, TileSize = new Size(1, 1), Track = new Track() { Name = "it100", Data = TrackData.BrakDanych, PermanentData = new Dictionary<string, object>() { { Track.DataNames.Kontrola.ToString(), (object)true }, { Track.DataNames.Zamkniety.ToString(), (object)true } } }, IsHorizontal = true });
         var tile2 = new TileBuilder().WithName("tile2").WithLocation(view, new Point(1, 1)).BuildTile();
 
-        // Act
-        var serialized = TileViewSerializer.Serialize(view);
-        TileViewManager.UnregisterView(view);
-        var deserialized = TileViewSerializer.Deserialize(serialized);
+        TileViewManager.SaveViews();
+        TileViewManager.UnregisterViews();
+        TileViewManager.ReadViews();
 
+        //// Act
+        //var serialized = TileViewSerializer.Serialize(view);
+        //TileViewManager.UnregisterView(view);
+        //var deserialized = TileViewSerializer.Deserialize(serialized);
+        var deserialized = TileViewManager.GetTileView(view.ViewID);
         // Assert
         Assert.IsNotNull(deserialized);
         Assert.AreEqual(viewID, deserialized.ViewID);
