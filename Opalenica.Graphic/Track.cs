@@ -4,6 +4,7 @@ using Opalenica.Graphic.Base;
 
 using System.Drawing.Drawing2D;
 using System.Drawing;
+
 using Newtonsoft.Json;
 
 public class Track : Element
@@ -63,18 +64,18 @@ public class Track : Element
     {
         return Data switch
         {
-            TrackData.StanPodstawowy => Colors.Gray,
-            TrackData.RejonManewrowy => Colors.LightCyan,
-            TrackData.OchronaPrzebiegu => Colors.Yellow,
-            TrackData.PrzebiegManewrowy => Colors.Yellow,
-            TrackData.ZwalnianyCzasowo => Colors.Pink,
-            TrackData.Zajety => Colors.Red,
-            TrackData.PierwszyPrzejazd => Colors.DarkRed,
+            TrackData.StanPodstawowy                     => Colors.Gray,
+            TrackData.RejonManewrowy                     => Colors.LightCyan,
+            TrackData.OchronaPrzebiegu                   => Colors.Yellow,
+            TrackData.PrzebiegManewrowy                  => Colors.Yellow,
+            TrackData.ZwalnianyCzasowo                   => Colors.Pink,
+            TrackData.Zajety                             => Colors.Red,
+            TrackData.PierwszyPrzejazd                   => Colors.DarkRed,
             TrackData.PotwierdzenieZerowania when !pulse => Colors.Red,
-            TrackData.PotwierdzenieZerowania when pulse => Colors.Gray,
-            TrackData.UszkodzenieKontroli when !pulse => Colors.White,
-            TrackData.UszkodzenieKontroli when pulse => Colors.Red,
-            TrackData.BrakDanych => Colors.White,
+            TrackData.PotwierdzenieZerowania when pulse  => Colors.Gray,
+            TrackData.UszkodzenieKontroli when !pulse    => Colors.White,
+            TrackData.UszkodzenieKontroli when pulse     => Colors.Red,
+            TrackData.BrakDanych                         => Colors.White,
             _ => Colors.None
         };
     }

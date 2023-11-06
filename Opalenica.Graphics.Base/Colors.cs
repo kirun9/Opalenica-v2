@@ -18,6 +18,8 @@ public struct Colors
     public static Color Azure { get; } = Color.FromArgb(0, 169, 255);
     public static Color DarkRed { get; } = Color.FromArgb(128, 0, 0);
 
+    public static Color Invisible { get; } = Color.FromArgb(0, 0, 0, 0); // Czy to nie będzie to samo co Color.Empty?
+
     public struct Pens
     {
         public static readonly Pen None = new Pen(Colors.None);
@@ -34,6 +36,8 @@ public struct Colors
         public static Pen LightCyan { get; } = new Pen(Colors.LightCyan);
         public static Pen Azure { get; } = new Pen(Colors.Azure);
         public static Pen DarkRed { get; } = new Pen(Colors.DarkRed);
+
+        public static Pen Invisible { get; } = new Pen(Colors.Invisible);
     }
 
     public struct Brushes
@@ -52,5 +56,7 @@ public struct Colors
         public static Brush LightCyan { get; } = new SolidBrush(Colors.LightCyan);
         public static Brush Azure { get; } = new SolidBrush(Colors.Azure);
         public static Brush DarkRed { get; } = new SolidBrush(Colors.DarkRed);
+
+        public static Brush Invisible { get; } = new SolidBrush(Colors.Invisible);
     }
 }

@@ -45,13 +45,16 @@ public class Pulpit : Control
 
         new Track() { Name = "it101", Data = TrackData.BrakDanych, PermanentData = new Dictionary<string, object>() { { Track.DataNames.Kontrola.ToString(), (object)true }, { Track.DataNames.Zamkniety.ToString(), (object)true } } }.RegisterElement();
         new Track() { Name = "it102", Data = TrackData.BrakDanych, PermanentData = new Dictionary<string, object>() { { Track.DataNames.Kontrola.ToString(), (object)true }, { Track.DataNames.Zamkniety.ToString(), (object)false } } }.RegisterElement();
+        new Junction() { Name = "roz1", Data = JunctionData.StanPodstawowy, TrackA = Element.GetElement<Track>("it101"), TrackB = Element.GetElement<Track>("it101"), TrackC = Element.GetElement<Track>("it102"), PermanentData = new Dictionary<string, object>() { { Junction.DataNames.Zamkniety.ToString(), (object)false } } }.RegisterElement();
+
 
         view.AddTile(new ColorTile() { Locations = { { "debugView", new Point(1, 0) } }, TileSize = new Size(3, 2), Name = "ColorCheckTile" });
         view.AddTile(new TrackTile() { Locations = { { "debugView", new Point(1, 5) } }, TileSize = new Size(5, 1), Track = Element.GetElement<Track>("it101"), IsHorizontal = true });
         view.AddTile(new TrackTile() { Locations = { { "debugView", new Point(6, 5) } }, TileSize = new Size(5, 1), Track = Element.GetElement<Track>("it102"), IsHorizontal = true });
-        view.AddTile(new TrackTile() { Locations = { { "debugView", new Point(11, 5) } }, TileSize = new Size(1, 1), Track = Element.GetElement<Track>("it102"), StartLocation = Graphic.Base.Location.MiddleLeft, EndLocation = Graphic.Base.Location.BottomMiddle });
-
+        //view.AddTile(new TrackTile() { Locations = { { "debugView", new Point(11, 5) } }, TileSize = new Size(1, 1), Track = Element.GetElement<Track>("it102"), StartLocation = Graphic.Base.Location.MiddleLeft, EndLocation = Graphic.Base.Location.BottomMiddle });
+        view.AddTile(new JunctionTile() { Locations = { { "debugView", new Point(11, 5) } }, Junction = Element.GetElement<Junction>("roz1"), Rotation = JunctionRotation.JunctionR_Down });
         Element.GetElement<Track>("it102").Data = TrackData.UszkodzenieKontroli;
+        //Element.GetElement<Junction>("roz1").Data = JunctionData.Zajety;
 
         grid.CurrentView = TileViewManager.GetTileView("debugView");
         TileViewManager.SaveViews();
