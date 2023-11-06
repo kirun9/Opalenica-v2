@@ -1,7 +1,8 @@
 ﻿namespace Opalenica.UI.Tiles.ElementTiles;
 
 using Opalenica.Commands;
-using Opalenica.UI.Tiles.Interfaces;
+using Opalenica.Graphic.Base;
+using Opalenica.Graphic.Base.Interfaces;
 
 internal class ColorTile : Tile, IContextMenu
 {

@@ -1,4 +1,4 @@
-﻿namespace Opalenica.Elements;
+﻿namespace Opalenica.Graphic.Base;
 
 using Kirun9.CommandParser.Readers;
 using Kirun9.CommandParser.Results;
@@ -10,6 +10,7 @@ using Newtonsoft.Json.Linq;
 
 using System;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 
 public class Element
 {
@@ -126,11 +127,11 @@ public class Element
             var commandService = provider.GetService<CommandService>();
             var found = registeredElements.Select(e =>
             {
-                return Settings.Default.CaseSensitiveCommands ? e.Name.Equals(input) : e.Name.ToLowerInvariant().Equals(input.ToLowerInvariant());
+                return false ? e.Name.Equals(input) : e.Name.ToLowerInvariant().Equals(input.ToLowerInvariant());
             });
             if (found.Any())
             {
-                if (Settings.Default.IgnoreMultiMatchElements)
+                if (true)
                     return TypeReaderResult.FromSuccess(found.First());
                 else
                     return TypeReaderResult.FromError(CommandError.MultipleMatches, "Multiple elements matched.");

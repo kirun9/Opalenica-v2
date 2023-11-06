@@ -1,7 +1,6 @@
-﻿namespace Opalenica.UI.Tiles;
+﻿namespace Opalenica.Graphic.Base.Exceptions;
 
 using System;
-using System.Drawing;
 using System.Runtime.Serialization;
 
 [Serializable]

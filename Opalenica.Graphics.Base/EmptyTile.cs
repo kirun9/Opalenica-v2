@@ -1,8 +1,8 @@
-﻿namespace Opalenica.UI.Tiles;
+﻿namespace Opalenica.Graphic.Base;
 
 using System.Drawing.Drawing2D;
 
-using static Opalenica.UI.Colors;
+using static Opalenica.Graphic.Base.Colors;
 
 public sealed class EmptyTile : Tile
 {

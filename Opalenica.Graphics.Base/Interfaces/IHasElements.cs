@@ -1,4 +1,4 @@
-﻿namespace Opalenica.Elements;
+﻿namespace Opalenica.Graphic.Base.Interfaces;
 
 public interface IHasElements
 {

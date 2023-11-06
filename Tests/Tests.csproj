@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Opalenica.Graphic\Opalenica.Graphic.csproj" />
     <ProjectReference Include="..\Opalenica\Opalenica.csproj" />
   </ItemGroup>
 

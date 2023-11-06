@@ -1,4 +1,4 @@
-﻿namespace Opalenica.UI.Tiles;
+﻿namespace Opalenica.Graphic.Base.Exceptions;
 
 using System;
 using System.Runtime.Serialization;
@@ -10,11 +10,11 @@ public class DuplicateTileViewException : Exception
     {
     }
 
-    public DuplicateTileViewException(String? message) : base(message)
+    public DuplicateTileViewException(string? message) : base(message)
     {
     }
 
-    public DuplicateTileViewException(String? message, Exception? innerException) : base(message, innerException)
+    public DuplicateTileViewException(string? message, Exception? innerException) : base(message, innerException)
     {
     }
 

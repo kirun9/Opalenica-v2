@@ -4,8 +4,11 @@ using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
 using Opalenica.Commands;
+using Opalenica.Graphic.Base;
+using Opalenica.Graphic.Base.Interfaces;
 using Opalenica.UI.Tiles.Interfaces;
-using static Opalenica.UI.Colors;
+
+using static Opalenica.Graphic.Base.Colors;
 
 public class TempTile : Tile, ILeftMouseAction, IContextMenu
 {

@@ -1,4 +1,6 @@
-﻿namespace Opalenica.UI.Tiles;
+﻿namespace Opalenica.Graphic.Base;
+
+using Opalenica.Graphic.Base.Exceptions;
 
 public class TileManager
 {

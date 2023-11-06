@@ -1,4 +1,4 @@
-﻿namespace Opalenica.Graphic;
+﻿namespace Opalenica.Graphic.Drawing;
 
 using Opalenica.UI;
 

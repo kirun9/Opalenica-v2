@@ -1,6 +1,8 @@
-﻿namespace Opalenica.UI.Tiles;
+﻿using Opalenica.Graphic.Base.Interfaces;
 
-public class PaintContext
+namespace Opalenica.Graphic.Base;
+
+public class PaintContext : IPaintContext
 {
     public PaintContext(Boolean debugMode, Graphics g, Size clip, bool pulse, ViewType viewType = ViewType.Normal)
     {

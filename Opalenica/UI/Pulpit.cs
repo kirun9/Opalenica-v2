@@ -2,10 +2,12 @@
 
 namespace Opalenica.UI;
 
-using Opalenica.Elements;
-using Opalenica.UI.Tiles;
+using Opalenica.Graphic;
+using Opalenica.Graphic.Base;
+using Opalenica.Graphic.Base.Interfaces;
 using Opalenica.UI.Tiles.ElementTiles;
 using Opalenica.UI.Tiles.Interfaces;
+
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
@@ -47,7 +49,7 @@ public class Pulpit : Control
         view.AddTile(new ColorTile() { Locations = { { "debugView", new Point(1, 0) } }, TileSize = new Size(3, 2), Name = "ColorCheckTile" });
         view.AddTile(new TrackTile() { Locations = { { "debugView", new Point(1, 5) } }, TileSize = new Size(5, 1), Track = Element.GetElement<Track>("it101"), IsHorizontal = true });
         view.AddTile(new TrackTile() { Locations = { { "debugView", new Point(6, 5) } }, TileSize = new Size(5, 1), Track = Element.GetElement<Track>("it102"), IsHorizontal = true });
-        view.AddTile(new TrackTile() { Locations = { { "debugView", new Point(11, 5) } }, TileSize = new Size(1, 1), Track = Element.GetElement<Track>("it102"), StartLocation = Tiles.Location.MiddleLeft, EndLocation = Tiles.Location.BottomMiddle });
+        view.AddTile(new TrackTile() { Locations = { { "debugView", new Point(11, 5) } }, TileSize = new Size(1, 1), Track = Element.GetElement<Track>("it102"), StartLocation = Graphic.Base.Location.MiddleLeft, EndLocation = Graphic.Base.Location.BottomMiddle });
 
         Element.GetElement<Track>("it102").Data = TrackData.UszkodzenieKontroli;
 

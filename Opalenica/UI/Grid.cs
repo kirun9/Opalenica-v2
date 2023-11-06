@@ -6,6 +6,7 @@ using Kirun9.CommandParser.Attributes;
 using Newtonsoft.Json;
 
 using Opalenica.Commands;
+using Opalenica.Graphic.Base;
 using Opalenica.UI.Tiles;
 
 using System.Text.RegularExpressions;

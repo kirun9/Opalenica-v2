@@ -1,9 +1,12 @@
-﻿namespace Opalenica.UI.Tiles;
-using System.Linq;
-using Opalenica.Elements;
-using Newtonsoft.Json.Serialization;
+﻿namespace Opalenica.Graphic.Base;
 
-public partial class TileView
+using System;
+using System.Drawing;
+
+using Opalenica.Graphic.Base.Exceptions;
+using Opalenica.Graphic.Base.Interfaces;
+
+public partial class TileView : ITileView
 {
     public string ViewID { get; set; }
     public Size Size { get; set; }
@@ -96,50 +99,4 @@ public partial class TileView
         }
         return elements;
     }
-
 }
-
-/*public class TileViewConverter : JsonConverter<TileView>
-{
-    public override TileView? ReadJson(JsonReader reader, Type objectType, TileView? existingValue, Boolean hasExistingValue, JsonSerializer serializer)
-    {
-        var jsonObject = JObject.Load(reader);
-        TileView tileView = new TileView(jsonObject[nameof(TileView.ViewID)].Value<string>(), jsonObject[nameof(TileView.Size)].ToObject<Size>());
-        tileView.ViewType = serializer.Deserialize<ViewType>(jsonObject[nameof(TileView.ViewType)].CreateReader());
-        JArray array = (JArray)jsonObject[nameof(TileView.Tiles)];
-        foreach (var tile in array)
-        {
-            if (tile.Type != JTokenType.Null)
-                tileView.AddTile(serializer.Deserialize<Tile>(tile.CreateReader()));
-        }
-        return tileView;
-    }
-
-    public override void WriteJson(JsonWriter json, TileView? tileView, JsonSerializer serializer)
-    {
-        json.WriteStartObject();
-        json.WritePropertyName(nameof(TileView.ViewID));
-        json.WriteValue(tileView.ViewID);
-        json.WritePropertyName(nameof(TileView.Size));
-        serializer.Serialize(json, tileView.Size);
-        json.WritePropertyName(nameof(TileView.ViewType));
-        serializer.Serialize(json, tileView.ViewType);
-        json.WritePropertyName(nameof(TileView.Tiles));
-        json.WriteStartArray();
-        for (int i = 0; i < tileView.Tiles.GetLength(0); i++)
-        {
-            for (int j = 0; j < tileView.Tiles.GetLength(1); j++)
-            {
-                var tile = tileView.Tiles[i, j];
-                if (tile is not null and not EmptyTile and not OccupiedTile)
-                {
-                    if (tile.GetType().GetCustomAttribute<DoNotSaveTileAttribute>() is null)
-                        serializer.Serialize(json, tile);
-                }
-            }
-        }
-
-        json.WriteEndArray();
-        json.WriteEndObject();
-    }
-}*/

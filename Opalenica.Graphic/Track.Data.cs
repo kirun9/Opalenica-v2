@@ -1,4 +1,4 @@
-﻿namespace Opalenica.Elements;
+﻿namespace Opalenica.Graphic;
 
 public enum TrackData
 {

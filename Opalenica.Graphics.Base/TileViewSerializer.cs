@@ -1,11 +1,6 @@
-﻿namespace Opalenica;
-
+﻿namespace Opalenica.Graphic.Base;
 using Newtonsoft.Json;
 
-using Opalenica.Elements;
-using Opalenica.UI.Tiles;
-
-using System.Collections.Generic;
 using System.Reflection;
 
 public static class TileViewSerializer
@@ -41,7 +36,7 @@ public static class TileViewSerializer
                 {
                     var constr = type.DeclaredConstructors.Where(e => !e.IsStatic).First();
                     if (constr is null) continue;
-                    output.Add((JsonConverter)constr.Invoke(new object[] {}));
+                    output.Add((JsonConverter)constr.Invoke(new object[] { }));
                 }
             }
         }

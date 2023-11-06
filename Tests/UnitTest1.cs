@@ -3,14 +3,16 @@ namespace Tests;
 using NUnit.Framework;
 
 using Opalenica;
-using Opalenica.Elements;
+using Opalenica.Graphic;
+using Opalenica.Graphic.Base;
+using Opalenica.Graphic.Base.Exceptions;
 using Opalenica.UI;
 using Opalenica.UI.Tiles;
 
-using System.Diagnostics;
 using System.Drawing;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
+
+using TileViewSerializer = Opalenica.Graphic.Base.TileViewSerializer;
 
 public class Tests
 {
@@ -126,5 +128,17 @@ public class Tests
         new TileView("debugView", grid.GridDimensions);
         grid.CurrentView = TileViewManager.GetTileView("debugView");
         Assert.AreEqual(grid.GridDimensions.Width * grid.GridDimensions.Height, grid.GetTiles().Count());
+    }
+
+    [Test]
+    [TestOf(nameof(ApplicationSettings.Instance))]
+    public void SingletonTest()
+    {
+        var settings = ApplicationSettings.Instance;
+        Assert.AreEqual(typeof(ApplicationSettings), settings.GetType());
+        if (settings is ApplicationSettings aSettings)
+            Assert.IsTrue(aSettings.DebugMode);
+        else
+            Assert.Fail("Instance is not ApplicationSettings type");
     }
 }

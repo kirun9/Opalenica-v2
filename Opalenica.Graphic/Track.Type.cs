@@ -1,4 +1,6 @@
-﻿public enum TrackType
+﻿namespace Opalenica.Graphic;
+
+public enum TrackType
 {
     Kontrola,
     KontrolaZamkniety,

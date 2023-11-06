@@ -1,11 +1,6 @@
-﻿namespace Opalenica.UI.Tiles;
+﻿namespace Opalenica.Graphic.Base;
 
-using Kirun9.CommandParser;
-
-using Newtonsoft.Json;
-
-using System.IO.Compression;
-using System.Xml.Serialization;
+using Opalenica.Graphic.Base.Exceptions;
 
 public class TileViewManager
 {
@@ -41,7 +36,7 @@ public class TileViewManager
             using StreamReader reader = new StreamReader(new GZipStream(File.OpenRead(file), CompressionMode.Decompress));
             var view = TileViewSerializer.Deserialize(reader.ReadToEnd());
 #else
-            foreach (var file in Directory.GetFiles("views", "*.json"))
+        foreach (var file in Directory.GetFiles("views", "*.json"))
         {
             var view = TileViewSerializer.Deserialize(File.ReadAllText(file));
 #endif

@@ -1,5 +1,7 @@
 ﻿namespace Opalenica.UI.Tiles;
 
+using Opalenica.Graphic.Base;
+
 public class TileBuilder
 {
     private Tile Tile;

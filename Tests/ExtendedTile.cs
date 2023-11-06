@@ -1,5 +1,6 @@
 ﻿namespace Tests;
-using Opalenica.UI.Tiles;
+
+using Opalenica.Graphic.Base;
 
 public class ExtendedTile : Tile
 {

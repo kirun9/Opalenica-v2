@@ -1,10 +1,12 @@
-﻿namespace Opalenica.UI.Tiles;
+﻿namespace Opalenica.Graphic.Base;
 
 using Newtonsoft.Json;
 
-using System;
+using Opalenica.Graphic.Base.Interfaces;
 
-public class Tile
+using System.Drawing;
+
+public class Tile : ITile
 {
     public string Name { get; set; }
     public Dictionary<string, Point> Locations { get; set; } = new Dictionary<string, Point>();
@@ -21,12 +23,12 @@ public class Tile
 
     }
 
-    internal void SetContext(TileView view)
+    public void SetContext(TileView view)
     {
         ViewID = view.ViewID;
     }
 
-    internal bool CheckContext(TileView view)
+    public bool CheckContext(TileView view)
     {
         return view.ViewID == ViewID;
     }

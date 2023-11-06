@@ -7,7 +7,7 @@ using Kirun9.CommandParser.Results;
 
 using Microsoft.Extensions.DependencyInjection;
 
-using Opalenica.Elements;
+using Opalenica.Graphic.Base;
 using Opalenica.Logging;
 
 using System;

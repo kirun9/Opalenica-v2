@@ -49,7 +49,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Opalenica.Core\Opalenica.Core.csproj" />
-    <ProjectReference Include="..\Opalenica.Graphics\Opalenica.Graphic.csproj" />
+    <ProjectReference Include="..\Opalenica.Graphics.Base\Opalenica.Graphic.Base.csproj" />
+    <ProjectReference Include="..\Opalenica.Graphics\Opalenica.Graphic.Drawing.csproj" />
+    <ProjectReference Include="..\Opalenica.Graphic\Opalenica.Graphic.csproj" />
     <ProjectReference Include="..\Opalenica.Updater\Opalenica.Updater.csproj" />
   </ItemGroup>
 

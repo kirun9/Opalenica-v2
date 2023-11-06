@@ -1,4 +1,4 @@
-﻿namespace Opalenica.UI.Tiles;
+﻿namespace Opalenica.Graphic.Base;
 
 public class OccupiedTile : Tile
 {
