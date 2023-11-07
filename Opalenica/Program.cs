@@ -13,6 +13,7 @@ using Kirun9.CommandParser.Attributes;
 using Microsoft.Extensions.DependencyInjection;
 
 using Opalenica.Commands;
+using Opalenica.Commands.Attributes;
 using Opalenica.Logging;
 using Opalenica.UI;
 

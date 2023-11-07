@@ -3,8 +3,7 @@
 namespace Opalenica.UI;
 
 using Opalenica.Graphic;
-using Opalenica.Graphic.Base;
-using Opalenica.Graphic.Base.Interfaces;
+using Opalenica.Graphic.Interfaces;
 using Opalenica.UI.Tiles.ElementTiles;
 using Opalenica.UI.Tiles.Interfaces;
 
@@ -16,7 +15,7 @@ using System.Windows.Forms;
 public class Pulpit : Control
 {
     private bool DesignerMode { get; } = false;
-    public static (float Horizontal, float Vertical) Scale { get; private set; } = (1, 1);
+    public static (float Horizontal, float Vertical) PulpitScale { get; private set; } = (1, 1);
     private static readonly Size designSize = new Size(1366, 768);
 
     Stopwatch watch = new Stopwatch();
@@ -82,7 +81,7 @@ public class Pulpit : Control
     protected void DesignerPaint(Graphics g)
     {
         Point center = new Point(Width / 2, Height / 2);
-        string s = $"Dimensions: {Width}x{Height}\nScale: {Scale.Horizontal}x{Scale.Vertical}";
+        string s = $"Dimensions: {Width}x{Height}\nScale: {PulpitScale.Horizontal}x{PulpitScale.Vertical}";
         g.FillRectangle(Brushes.Black, 0, 0, Width, Height);
         using Pen pen = new Pen(Colors.White, 5);
         pen.Alignment = PenAlignment.Inset;
@@ -108,9 +107,9 @@ public class Pulpit : Control
         foreach (Tile tile in grid.GetTiles())
         {
             Point p = grid.CalculateGraphicTilePosition(tile);
-            g.ScaleTransform(Scale.Horizontal, Scale.Vertical);
+            g.ScaleTransform(PulpitScale.Horizontal, PulpitScale.Vertical);
             g.TranslateTransform(p.X, p.Y);
-            g.TranslateTransform(((Width / Scale.Horizontal) - grid.GridDimensions.Width * grid.TileSize.Width + 1) / 2, ((Height / Scale.Vertical) - grid.GridDimensions.Height * grid.TileSize.Height + 1) / 2);
+            g.TranslateTransform(((Width / PulpitScale.Horizontal) - grid.GridDimensions.Width * grid.TileSize.Width + 1) / 2, ((Height / PulpitScale.Vertical) - grid.GridDimensions.Height * grid.TileSize.Height + 1) / 2);
             var tileSize = new Size(grid.TileSize.Width * tile.TileSize.Width, grid.TileSize.Height * tile.TileSize.Height);
             g.Clip = new Region(new Rectangle(0, 0, tileSize.Width + 1, tileSize.Height + 1));
             g.TranslateClip(p.X == 0 ? -2 : -1, p.Y == 0 ? -2 : -1);
@@ -133,8 +132,8 @@ public class Pulpit : Control
     {
         base.OnMouseClick(e);
         var pos = e.Location;
-        pos.X = (int)(pos.X / Scale.Horizontal);
-        pos.Y = (int)(pos.Y / Scale.Vertical);
+        pos.X = (int)(pos.X / PulpitScale.Horizontal);
+        pos.Y = (int)(pos.Y / PulpitScale.Vertical);
         var tile = grid.GetTileFromPoint(pos);
 
         if (tile is ILeftMouseAction leftMouseAction && e.Button is MouseButtons.Left)
@@ -175,6 +174,6 @@ public class Pulpit : Control
 
     private void CalculateScale()
     {
-        Scale = ((float)Width / designSize.Width, (float)Height / designSize.Height);
+        PulpitScale = ((float)Width / designSize.Width, (float)Height / designSize.Height);
     }
 }

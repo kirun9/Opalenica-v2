@@ -1,8 +1,10 @@
-﻿namespace Opalenica.UI.Tiles.ElementTiles;
+﻿// Copyright (c) Krystian Pawełek PKMK. All rights reserved.
+
+namespace Opalenica.UI.Tiles.ElementTiles;
 
 using Opalenica.Commands;
-using Opalenica.Graphic.Base;
-using Opalenica.Graphic.Base.Interfaces;
+using Opalenica.Graphic;
+using Opalenica.Graphic.Interfaces;
 
 internal class ColorTile : Tile, IContextMenu
 {

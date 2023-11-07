@@ -1,4 +1,6 @@
-﻿namespace Opalenica.Updater;
+﻿// Copyright (c) Krystian Pawełek PKMK. All rights reserved.
+
+namespace Opalenica.Updater;
 using System.Security.Cryptography;
 using System.Text;
 

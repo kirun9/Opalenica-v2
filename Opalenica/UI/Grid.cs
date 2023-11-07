@@ -1,13 +1,13 @@
-﻿namespace Opalenica.UI;
+﻿// Copyright (c) Krystian Pawełek PKMK. All rights reserved.
+
+namespace Opalenica.UI;
 
 using Kirun9.CommandParser;
 using Kirun9.CommandParser.Attributes;
 
-using Newtonsoft.Json;
-
 using Opalenica.Commands;
-using Opalenica.Graphic.Base;
-using Opalenica.UI.Tiles;
+using Opalenica.Commands.Attributes;
+using Opalenica.Graphic;
 
 using System.Text.RegularExpressions;
 using Timer = System.Windows.Forms.Timer;

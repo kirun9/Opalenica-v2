@@ -1,4 +1,6 @@
-﻿namespace Opalenica.Updater;
+﻿// Copyright (c) Krystian Pawełek PKMK. All rights reserved.
+
+namespace Opalenica.Updater;
 
 public static class FileInfoExtension
 {

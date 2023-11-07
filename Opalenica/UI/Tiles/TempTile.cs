@@ -1,14 +1,16 @@
-﻿namespace Opalenica.UI.Tiles;
+﻿// Copyright (c) Krystian Pawełek PKMK. All rights reserved.
+
+namespace Opalenica.UI.Tiles;
 
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
 using Opalenica.Commands;
-using Opalenica.Graphic.Base;
-using Opalenica.Graphic.Base.Interfaces;
+using Opalenica.Graphic;
+using Opalenica.Graphic.Interfaces;
 using Opalenica.UI.Tiles.Interfaces;
 
-using static Opalenica.Graphic.Base.Colors;
+using static Opalenica.Graphic.Colors;
 
 public class TempTile : Tile, ILeftMouseAction, IContextMenu
 {

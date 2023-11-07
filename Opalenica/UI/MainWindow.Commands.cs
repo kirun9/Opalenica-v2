@@ -6,6 +6,7 @@ using Kirun9.CommandParser;
 using Kirun9.CommandParser.Attributes;
 
 using Opalenica.Commands;
+using Opalenica.Commands.Attributes;
 using Opalenica.Logging;
 
 public class MainWindowCommands : ModuleBase<ICommandContext>

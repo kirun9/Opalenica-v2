@@ -1,9 +1,8 @@
-﻿namespace Opalenica.Updater;
+﻿// Copyright (c) Krystian Pawełek PKMK. All rights reserved.
 
-using System.ComponentModel;
-using System.ComponentModel.Design;
+namespace Opalenica.Updater;
+
 using System.Diagnostics;
-using System.Net;
 using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
@@ -32,7 +31,7 @@ public class UpdateManager
         catch { return false; }
     }
 
-    public static UpdateInfo DownloadUpdateInfo(Assembly assembly)
+    public static UpdateInfo? DownloadUpdateInfo(Assembly assembly)
     {
         try
         {
@@ -40,8 +39,7 @@ public class UpdateManager
             XmlReader reader = XmlReader.Create(UpdateURL + "/updates.xml");
             if (serializer.CanDeserialize(reader))
             {
-                UpdatesXml updateData = (UpdatesXml)serializer.Deserialize(reader);
-                if (updateData is null)
+                if (serializer.Deserialize(reader) is not UpdatesXml updateData)
                     throw new ApplicationException("Readed data is not in correct format. Unsuccessful parse");
                 // Select only updateInfo that we are interested in (from the same application)
                 var info = updateData.Updates.Where(e => e.ApplicationID == assembly.GetName().Name);
@@ -63,13 +61,13 @@ public class UpdateManager
     {
         Thread thread = new Thread(() =>
         {
-            var tempLocation = Path.Combine(new FInfo(Assembly.GetEntryAssembly().Location).Directory.FullName, "temp");
+            var tempLocation = GetCurrentLocation();
             var baseUri = new Uri(UpdateURL);
             var updateUri = new Uri(baseUri, info.Location);
             foreach (var file in info.FileList)
             {
                 var fileInfo = new FInfo(Path.Combine(tempLocation, file.FileName));
-                if (!fileInfo.Directory.Exists) fileInfo.Directory.Create();
+                if (!fileInfo.Directory?.Exists ?? false) fileInfo.Directory?.Create();
                 var fileStream = fileInfo.Create();
                 fileStream.Close();
                 fileStream.Dispose();
@@ -128,7 +126,7 @@ public class UpdateManager
 
     public static void FinishUpdate(UpdateInfo info)
     {
-        var currentPath = new FInfo(Assembly.GetEntryAssembly().Location).Directory.FullName;
+        var currentPath = GetCurrentLocation();
         var tempPath = Path.Combine(currentPath, "temp");
         var startFile = Path.Combine(currentPath, info.StartFileInfo.FileLocalLocation);
 
@@ -186,5 +184,12 @@ public class UpdateManager
         commands.Add(StartCommand(args[0], args[2], args[3]));
 
         return "/C " + String.Join(" & ", commands.ToArray());
+    }
+
+    private static string GetCurrentLocation()
+    {
+        var currentPath = new FInfo(Assembly.GetEntryAssembly()?.Location ?? "./").Directory?.FullName;
+        if (currentPath is null) throw new NullReferenceException("Cannot get current path");
+        return currentPath;
     }
 }

@@ -4,15 +4,13 @@ using NUnit.Framework;
 
 using Opalenica;
 using Opalenica.Graphic;
-using Opalenica.Graphic.Base;
-using Opalenica.Graphic.Base.Exceptions;
+using Opalenica.Graphic.Exceptions;
 using Opalenica.UI;
-using Opalenica.UI.Tiles;
 
 using System.Drawing;
 using System.Text.RegularExpressions;
 
-using TileViewSerializer = Opalenica.Graphic.Base.TileViewSerializer;
+using TileViewSerializer = Opalenica.Graphic.TileViewSerializer;
 
 public class Tests
 {

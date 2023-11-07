@@ -1,4 +1,4 @@
-﻿/// Written by https://stackoverflow.com/users/1310846/g-y
+﻿// Written by https://stackoverflow.com/users/1310846/g-y
 namespace Opalenica.Misc;
 
 using System.ComponentModel;
