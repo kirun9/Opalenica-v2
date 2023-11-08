@@ -2,13 +2,7 @@
 
 namespace Opalenica.UI;
 
-using Kirun9.CommandParser;
-using Kirun9.CommandParser.Attributes;
-
-using Opalenica.Commands;
-using Opalenica.Commands.Attributes;
 using Opalenica.Graphic;
-
 using System.Text.RegularExpressions;
 using Timer = System.Windows.Forms.Timer;
 
@@ -70,19 +64,5 @@ public class Grid
         var x = (point.X - 2) / TileSize.Width;
         var y = (point.Y - 2) / TileSize.Height;
         return CurrentView.GetTile(new Point(x, y));
-    }
-}
-
-public class GridCommands : ModuleBase<ICommandContext>
-{
-    [Command("reload grid")]
-    [Alias("rlg")]
-    [DebugCommand]
-    public void ReloadGrid()
-    {
-        var grid = Grid.Instance;
-        TileViewManager.UnregisterViews();
-        TileViewManager.ReadViews();
-        //grid.Load(grid.CurrentView);
     }
 }

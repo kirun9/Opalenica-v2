@@ -2,10 +2,8 @@
 
 namespace Opalenica.UI;
 
-public enum TriangleDirection
+public enum ViewType
 {
-    Up,
-    Down,
-    Left,
-    Right
+    Normal,
+    Advanced
 }

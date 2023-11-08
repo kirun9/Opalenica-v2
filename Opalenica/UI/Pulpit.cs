@@ -2,9 +2,9 @@
 
 namespace Opalenica.UI;
 
+using Opalenica.Elements;
 using Opalenica.Graphic;
 using Opalenica.Graphic.Interfaces;
-using Opalenica.UI.Tiles.ElementTiles;
 using Opalenica.UI.Tiles.Interfaces;
 
 using System.ComponentModel;
@@ -16,11 +16,11 @@ public class Pulpit : Control
 {
     private bool DesignerMode { get; } = false;
     public static (float Horizontal, float Vertical) PulpitScale { get; private set; } = (1, 1);
-    private static readonly Size designSize = new Size(1366, 768);
+    private static readonly Size DesignSize = new Size(1366, 768);
 
-    Stopwatch watch = new Stopwatch();
+    readonly Stopwatch watch = new Stopwatch();
 
-    Grid grid = new Grid("34x19,40x40");
+    private Grid grid = new Grid("34x19,40x40");
 
     private ContextMenuStrip _contextMenu;
     private bool _blockLeftRightClick;
@@ -42,17 +42,17 @@ public class Pulpit : Control
 
         var view = new TileView("debugView", grid.GridDimensions);
 
-        new Track() { Name = "it101", Data = TrackData.BrakDanych, PermanentData = new Dictionary<string, object>() { { Track.DataNames.Kontrola.ToString(), (object)true }, { Track.DataNames.Zamkniety.ToString(), (object)true } } }.RegisterElement();
-        new Track() { Name = "it102", Data = TrackData.BrakDanych, PermanentData = new Dictionary<string, object>() { { Track.DataNames.Kontrola.ToString(), (object)true }, { Track.DataNames.Zamkniety.ToString(), (object)false } } }.RegisterElement();
-        new Junction() { Name = "roz1", Data = JunctionData.StanPodstawowy, TrackA = Element.GetElement<Track>("it101"), TrackB = Element.GetElement<Track>("it101"), TrackC = Element.GetElement<Track>("it102"), PermanentData = new Dictionary<string, object>() { { Junction.DataNames.Zamkniety.ToString(), (object)false } } }.RegisterElement();
+        new Track() { Name = "it101", Data = Track.TrackData.BrakDanych, PermanentData = new Dictionary<string, object>() { { Track.DataNames.Kontrola.ToString(), (object)true }, { Track.DataNames.Zamkniety.ToString(), (object)true } } }.RegisterElement();
+        new Track() { Name = "it102", Data = Track.TrackData.BrakDanych, PermanentData = new Dictionary<string, object>() { { Track.DataNames.Kontrola.ToString(), (object)true }, { Track.DataNames.Zamkniety.ToString(), (object)false } } }.RegisterElement();
+        new Junction() { Name = "roz1", Data = Junction.JunctionData.StanPodstawowy, TrackA = Element.GetElement<Track>("it101"), TrackB = Element.GetElement<Track>("it101"), TrackC = Element.GetElement<Track>("it102"), PermanentData = new Dictionary<string, object>() { { Junction.DataNames.Zamkniety.ToString(), (object)false } } }.RegisterElement();
 
 
         view.AddTile(new ColorTile() { Locations = { { "debugView", new Point(1, 0) } }, TileSize = new Size(3, 2), Name = "ColorCheckTile" });
         view.AddTile(new TrackTile() { Locations = { { "debugView", new Point(1, 5) } }, TileSize = new Size(5, 1), Track = Element.GetElement<Track>("it101"), IsHorizontal = true });
         view.AddTile(new TrackTile() { Locations = { { "debugView", new Point(6, 5) } }, TileSize = new Size(5, 1), Track = Element.GetElement<Track>("it102"), IsHorizontal = true });
         //view.AddTile(new TrackTile() { Locations = { { "debugView", new Point(11, 5) } }, TileSize = new Size(1, 1), Track = Element.GetElement<Track>("it102"), StartLocation = Graphic.Base.Location.MiddleLeft, EndLocation = Graphic.Base.Location.BottomMiddle });
-        view.AddTile(new JunctionTile() { Locations = { { "debugView", new Point(11, 5) } }, Junction = Element.GetElement<Junction>("roz1"), Rotation = JunctionRotation.JunctionR_Down });
-        Element.GetElement<Track>("it102").Data = TrackData.UszkodzenieKontroli;
+        view.AddTile(new JunctionTile() { Locations = { { "debugView", new Point(11, 5) } }, Junction = Element.GetElement<Junction>("roz1"), Rotation = Junction.JunctionRotation.JunctionR_Down });
+        Element.GetElement<Track>("it102").Data = Track.TrackData.UszkodzenieKontroli;
         //Element.GetElement<Junction>("roz1").Data = JunctionData.Zajety;
 
         grid.CurrentView = TileViewManager.GetTileView("debugView");
@@ -174,6 +174,6 @@ public class Pulpit : Control
 
     private void CalculateScale()
     {
-        PulpitScale = ((float)Width / designSize.Width, (float)Height / designSize.Height);
+        PulpitScale = ((float)Width / DesignSize.Width, (float)Height / DesignSize.Height);
     }
 }

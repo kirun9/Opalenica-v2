@@ -1,4 +1,6 @@
-﻿namespace Opalenica.Core;
+﻿// Copyright (c) Krystian Pawełek PKMK. All rights reserved.
+
+namespace Opalenica.Core;
 
 using System;
 using System.Diagnostics;

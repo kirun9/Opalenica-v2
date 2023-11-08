@@ -3,6 +3,7 @@ namespace Tests;
 using NUnit.Framework;
 
 using Opalenica;
+using Opalenica.Elements;
 using Opalenica.Graphic;
 using Opalenica.Graphic.Exceptions;
 using Opalenica.UI;
